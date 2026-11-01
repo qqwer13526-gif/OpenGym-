@@ -54,3 +54,11 @@ Day 2 完善五个页面、视频预览与校验、表单草稿和统一健康�
 两位成员按前后端分工：用户负责前端，另一位成员负责后端。Day 3 开始真实接口联调，Day 4 完整演练，Day 5 做最终验收与修复。已检测到 Git origin 配置，但尚无本地提交，未确认远端同步；当前进度保存于本地 PROGRESS.md。
 
 用户选择 Codex/ChatGPT 开发；此选择与赛事文件的 WorkBuddy 主体开发条款不一致，未声称符合该条。正式提交仍需补齐《提交材料说明.md》并确认模型/代码许可证适合最终分发方式（Ultralytics 提供 AGPL 与商业许可选项）。
+
+## 开源许可证
+
+本项目原创代码以 GNU Affero General Public License v3.0（SPDX: AGPL-3.0-only）发布，完整条款见 LICENSE。Copyright (C) 2026 FitPilot AI contributors。
+
+允许依照许可证使用、修改与分发；分发和通过网络提供修改版本时，应履行相应的源码提供义务。项目不提供任何保证。完整适用条款以 LICENSE 为准。
+
+第三方依赖、模型和非原创参考资料保留各自许可证或权利归属，不由本项目重新授权，详见 THIRD_PARTY_NOTICES.md。视频和模型权重未随仓库分发。公开代码不代表已经验证所有功能或取得赛事资格，实际完成情况见 PROGRESS.md。

@@ -60,3 +60,8 @@ Day 3 Git 状态补充：检测到 origin=https://github.com/wangmiaoduxue-crypt
 - 本次建立 main 初始项目基线，包含 Day 1–3 必要源码、Day 3 分析前端、接口文档、TEAM_HANDOFF.md、测试及历史记录；没有覆盖队友历史。
 - 提交前复查：49 个候选文件约 162 KB；无常见凭据模式命中；22 项前端测试再次通过。视频、权重、环境、依赖和构建产物由 .gitignore 排除。
 - 后续成员从 main 创建功能分支、审阅后合并。推送成功以 GitHub 提交记录和本地/远端 SHA 核对为准。
+
+### 2026-11-01 · 开源发布授权
+- 用户明确要求将仓库公开，并选择 AGPL-3.0。
+- 新增 LICENSE（AGPL-3.0-only 完整标准文本）、README 开源说明与 THIRD_PARTY_NOTICES.md，区分原创代码和第三方材料。
+- 本次仅修改发布文档与仓库可见性；不代表新增模型能力或完成真实视频联调。公开状态以 GitHub API 核对为准。
