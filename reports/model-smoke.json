@@ -1,0 +1,7 @@
+{
+  "test": "synthetic_blank_image_inference",
+  "device": "0",
+  "inference_completed": true,
+  "detections": 0,
+  "bench_press_validated": false
+}

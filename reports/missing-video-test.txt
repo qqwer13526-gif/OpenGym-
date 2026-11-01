@@ -1,0 +1,4 @@
+usage: analyze_bench.py [-h] [--model MODEL] [--device DEVICE]
+                        [--max-frames MAX_FRAMES] [--output OUTPUT]
+                        video
+analyze_bench.py: error: Real video not found: data\missing-bench.mp4. No results generated.
