@@ -8,7 +8,7 @@ export const catalog = [
   ['pushdown-cable', '绳索下压', ['手臂']],
   ['squat-barbell', '杠铃深蹲', ['腿部']],
   ['deadlift-barbell', '杠铃硬拉', ['腿部', '背部']]
-].map(([id, name, muscleIds]) => ({ id, name, muscleIds, unit: 'kg', loadConvention: 'external-total', knowledgeSource: { ...source } }));
+].map(([id, name, muscleIds]) => ({ id, name, muscleIds, unit: 'kg', loadConvention: id==='bench-dumbbell'?'per-dumbbell':'external-total', knowledgeSource: { ...source } }));
 export const muscles = {
   '胸部': { x: 260, y: 210, color: '#b59aff', english: 'Chest', letter: 'C' },
   '背部': { x: 744, y: 316, color: '#83cddd', english: 'Back', letter: 'B' },

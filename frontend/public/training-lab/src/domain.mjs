@@ -12,7 +12,7 @@ export function validate(data) {
   const exerciseIds = new Set(data.exercises.map(e => e.id));
   const sessionIds = new Set(data.sessions.map(s => s.id));
   for (const e of data.exercises) {
-    if (!text(e.name) || e.unit !== 'kg' || e.loadConvention !== 'external-total' ||
+    if (!text(e.name) || e.unit !== 'kg' || !['external-total','per-dumbbell'].includes(e.loadConvention) ||
         !Array.isArray(e.muscleIds) || e.muscleIds.some(m => !text(m)) ||
         !text(e.knowledgeSource?.type) || typeof e.knowledgeSource?.reviewed !== 'boolean') fail('Invalid exercise');
   }
@@ -57,7 +57,7 @@ export function dailyVolumes(data, exerciseId) {
     const session = sessions.get(set.sessionId);
     if (!session || set.exerciseId !== exerciseId) continue;
     const day = days.get(session.date) ?? { date: session.date, volume: 0, setIds: [] };
-    day.volume += set.weightKg * set.reps;
+    day.volume += set.weightKg * set.reps * volumeFactor(data,set.exerciseId);
     if (!Number.isFinite(day.volume)) throw new Error('Volume overflow');
     day.setIds.push(set.id);
     days.set(session.date, day);
@@ -103,3 +103,14 @@ export function projectGraph(data) {
   }
   return { nodes: [...nodes.values()], links };
 }
+
+// Convert only the explicitly identified legacy bilateral dumbbell action, once.
+export function migrateDumbbells(raw, draft=null){
+ validate(raw);const data=structuredClone(raw),input=draft?structuredClone(draft):null;
+ const ids=new Set(data.exercises.filter(e=>e.id==='bench-dumbbell'&&e.loadConvention==='external-total').map(e=>e.id));
+ for(const e of data.exercises)if(ids.has(e.id))e.loadConvention='per-dumbbell';
+ for(const s of data.sets)if(ids.has(s.exerciseId))s.weightKg/=2;
+ if(input&&ids.has(input.exerciseId)&&input.weightKg!==''&&input.weightKg!=null&&Number.isFinite(Number(input.weightKg)))input.weightKg=String(Number(input.weightKg)/2);
+ return {data,input,changed:ids.size>0};
+}
+export const volumeFactor=(data,id)=>data.exercises.find(e=>e.id===id)?.loadConvention==='per-dumbbell'?2:1;
