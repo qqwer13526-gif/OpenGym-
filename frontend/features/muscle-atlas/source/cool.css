@@ -1,0 +1,16 @@
+:root{--accent:#c3cbd7;--text:#e1e6ed;--muted:#8d98a7;--line:#29313b;background:#101318;color:var(--text)}
+.topbar{background:#12161bf5}.stage{background:#12161b}.stage:before{display:none}.details{background:#151a20}.shell,.app,#planView{background:#101419}
+.node.group .node-core{fill:#c2cad4;stroke:none}.node.muscle .node-core{fill:#929caa}.node.exercise .node-core{fill:#192029;stroke:#aab7c8}
+.node.group .node-label{font-size:21px;letter-spacing:0;font-weight:500;fill:#dbe1e9;stroke:#12161b;stroke-width:5px;paint-order:stroke}
+.node.muscle .node-label{font-size:15px;fill:#a9b3c0;stroke:#12161b}.node.exercise .node-label{font-size:15px;fill:#aab6c6;stroke:#12161b}
+.node .selection-ring{stroke:#c3d1e3;stroke-width:1;opacity:0}.node.focus .selection-ring{opacity:.8}.node.focus .node-core{fill:#d8e2ee;stroke:#d8e2ee;filter:none}.node:hover .node-core{fill:#e0e7f0;filter:none}
+.node.group.focus .node-core{fill-opacity:1}.node.focus .node-label,.node.connected .node-label{fill:#e3eaf3;font-weight:500}.node.dim{opacity:.27}
+.graph-edge{stroke:#8492a4;opacity:.18}.graph-edge.primary{opacity:.15}.graph-edge.secondary,.graph-edge.stability{opacity:.11}.graph-edge.lit{stroke:#b6c5d9!important;opacity:.88}.graph-edge.lit.secondary,.graph-edge.lit.stability{opacity:.65}.graph-edge.dim{opacity:.035}
+.primary-button{background:#c3ccd8!important;color:#161d26!important;border-color:#c3ccd8!important}.primary-button:hover{background:#d5deea!important}.view-tabs button[aria-selected=true]{background:#29313c;color:#e7edf5}
+.layer-controls #examplesToggle[aria-pressed=true],.layer-controls #layerToggle[aria-pressed=true],.library-filters button[aria-pressed=true]{background:#2a3441;color:#d5dfed;border-color:#536278}
+.week-tabs button[aria-selected=true]{background:#29323e;border-color:#5b6c82;color:#edf2f8}.week-tabs button[aria-selected=true] b{color:#b3c2d6}.advice-card h3,.advice-button{color:#cfdae9}.coverage-row b{color:#d6e1ed}.coverage-toggle button[aria-pressed=true]{background:#2d3745;color:#d8e3f2}
+.goal-button,.text-button,.row-tools button,.more-advice{color:#a5b4c8}.demo-banner{background:#232c37;border-color:#4d5c71;color:#c9d6e8}.demo-banner button{color:#e0e8f3}
+.form-actions button,.manager-tools button,.dialog-actions button,.edit-action,.layer-controls #addAction{background:#2b3543;border-color:#4a5b72;color:#d5dfed}.library-add{background:#2b3645;border-color:#4d6079;color:#d4e0f0}.picker-group{background:#28323f;color:#bfcde0}.user-badge{border-color:#52647b;color:#c1d1e5}
+.tag{border-color:#3a4656;color:#c1cedd}.tag:hover{background:#2d3745;border-color:#687c96}.layer-controls #saveStatus{color:#9aabc0}.layer-controls #saveStatus.error{color:#d5b8b1}.plan-row input:hover{border-color:#71849d}.source-details a{color:#b8cbe3}.form-error{color:#cdb6b2}
+#planNotice{background:#2b3644;border-color:#586e89;color:#dbe7f5}#planNotice.error{background:#302b30;border-color:#6c5d68;color:#dfcad1}
+@media(max-width:820px){.node.group .node-label{font-size:27px}.node.muscle .node-label,.node.exercise .node-label{font-size:24px}}

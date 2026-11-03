@@ -1,0 +1,14 @@
+{
+  "passed": [
+    "original 5 routes",
+    "24 actions",
+    "plan add and persistence",
+    "no invented completed logs",
+    "personal archive link",
+    "recovery",
+    "discomfort",
+    "demo isolation",
+    "tab close/reopen persistence"
+  ],
+  "errors": []
+}

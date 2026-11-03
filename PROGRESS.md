@@ -65,3 +65,7 @@ Day 3 Git 状态补充：检测到 origin=https://github.com/wangmiaoduxue-crypt
 - 用户明确要求将仓库公开，并选择 AGPL-3.0。
 - 新增 LICENSE（AGPL-3.0-only 完整标准文本）、README 开源说明与 THIRD_PARTY_NOTICES.md，区分原创代码和第三方材料。
 - 本次仅修改发布文档与仓库可见性；不代表新增模型能力或完成真实视频联调。公开状态以 GitHub API 核对为准。
+
+## 2026-11-03 · Codex 前端集成
+
+24动作图谱、周计划与个人训练/两周档案等三个入口接入；原22项前端测试、个人数据规则、类型检查与webpack生产构建通过。详见 docs/INTEGRATION-2026-11-03.md。共同仓库写权限403，个人功能分支发布状态见本轮最终交付；后端不变。

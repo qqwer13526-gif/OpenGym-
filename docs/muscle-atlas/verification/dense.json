@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "120 visible nodes preserve local avoidance and pointer clearance",
+    "untouched distant group remains fixed",
+    "simulation stops; positions finite; original action storage unchanged"
+  ],
+  "jsErrors": []
+}

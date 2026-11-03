@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {bodyArchive} from '../../../public/training-lab/src/body-archive.mjs';
+import {blankData} from '../../../public/training-lab/src/catalog.mjs';
+import {validate} from '../../../public/training-lab/src/domain.mjs';
+const d=blankData();assert.equal(bodyArchive(d,'2026-11-02').status,'首次建档');
+d.profile.bodyCycleStart='2026-10-05';
+const m=(id,date,weightKg,fatPercent,method='A')=>({id,date,weightKg,fatPercent,method,fatigue:null,soreness:null,muscle:''});
+d.monitoring=[m('a','2026-10-05',70,20),m('b','2026-10-18',69,19),m('c','2026-10-19',68,18,'B')];validate(d);
+let a=bodyArchive(d,'2026-10-18','A');assert.equal(a.due,'2026-10-19');assert.equal(a.cycles[0].weight.weightKg,69);assert.equal(a.cycles[0].rows.length,2);
+a=bodyArchive(d,'2026-10-19','A');assert.equal(a.cycles.length,2);assert.equal(a.cycles[1].fat,null);assert.equal(a.cycles[1].weight.weightKg,68);assert.equal(a.due,'2026-11-02');
+a=bodyArchive(d,'2026-11-02','A');assert.equal(a.status,'本周期待更新');assert.equal(a.cycles.at(-1).rows.length,0);assert.equal(a.due,'2026-11-02');
+d.monitoring.push({...m('w','2026-11-02',null,null),waistCm:80});validate(d);assert.equal(bodyArchive(d,'2026-11-02').cycles.at(-1).waist.waistCm,80);
+const bad=structuredClone(d);bad.monitoring.at(-1).waistCm=-1;assert.throws(()=>validate(bad));bad.monitoring.at(-1).waistCm=80;bad.profile.bodyCycleStart='2026-02-30';assert.throws(()=>validate(bad));
+console.log('PASS first record, exact 14-day boundary, period last measurement, original retention, method isolation, missing cycle, waist-only validation, invalid date/value');
