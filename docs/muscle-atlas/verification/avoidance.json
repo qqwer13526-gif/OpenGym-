@@ -1,0 +1,241 @@
+{
+  "checks": [
+    "smaller centre dots, external labels, monochrome palette and semantic membership edges retained",
+    "dragging a centre carries only its own satellites, retains their new positions after release and leaves other groups fixed",
+    "approached dot yields locally, pointer follows 1:1, far nodes remain still and the neighbour does not return through the dropped dot",
+    "a new distant empty drag freezes the old local avoidance state instead of waking previously affected points",
+    "dragging the old occupant away wakes only its nearby displaced neighbour and lets that neighbour return toward its original position",
+    "a fast swept path triggers local avoidance instead of silently skipping over a node",
+    "zoomed dragging retains visible clearance without waking distant nodes",
+    "near-edge collision leaves both circles visible and separated",
+    "reduced motion preserves immediate local avoidance and remote stability",
+    "group followers retain collision avoidance and settle after release without waking untouched distant groups"
+  ],
+  "metrics": {
+    "labels": [
+      {
+        "id": "chest",
+        "circle": {
+          "x": 208.73928833007812,
+          "y": 432.441650390625,
+          "width": 12.473800659179688,
+          "height": 12.47381591796875,
+          "top": 432.441650390625,
+          "right": 221.2130889892578,
+          "bottom": 444.91546630859375,
+          "left": 208.73928833007812
+        },
+        "label": {
+          "x": 203.8980712890625,
+          "y": 453.1404724121094,
+          "width": 21.15625,
+          "height": 27,
+          "top": 453.1404724121094,
+          "right": 225.0543212890625,
+          "bottom": 480.1404724121094,
+          "left": 203.8980712890625
+        },
+        "gap": 8.225006103515625
+      },
+      {
+        "id": "back",
+        "circle": {
+          "x": 918.7869262695312,
+          "y": 432.441650390625,
+          "width": 12.47381591796875,
+          "height": 12.47381591796875,
+          "top": 432.441650390625,
+          "right": 931.2607421875,
+          "bottom": 444.91546630859375,
+          "left": 918.7869262695312
+        },
+        "label": {
+          "x": 914.9456787109375,
+          "y": 453.1404724121094,
+          "width": 20.15625,
+          "height": 27,
+          "top": 453.1404724121094,
+          "right": 935.1019287109375,
+          "bottom": 480.1404724121094,
+          "left": 914.9456787109375
+        },
+        "gap": 8.225006103515625
+      },
+      {
+        "id": "shoulders",
+        "circle": {
+          "x": 558.9654541015625,
+          "y": 331.691650390625,
+          "width": 12.47381591796875,
+          "height": 12.47381591796875,
+          "top": 331.691650390625,
+          "right": 571.4392700195312,
+          "bottom": 344.16546630859375,
+          "left": 558.9654541015625
+        },
+        "label": {
+          "x": 554.124267578125,
+          "y": 352.3904724121094,
+          "width": 21.15618896484375,
+          "height": 27,
+          "top": 352.3904724121094,
+          "right": 575.2804565429688,
+          "bottom": 379.3904724121094,
+          "left": 554.124267578125
+        },
+        "gap": 8.225006103515625
+      },
+      {
+        "id": "legs",
+        "circle": {
+          "x": 558.9654541015625,
+          "y": 835.441650390625,
+          "width": 12.47381591796875,
+          "height": 12.47381591796875,
+          "top": 835.441650390625,
+          "right": 571.4392700195312,
+          "bottom": 847.9154663085938,
+          "left": 558.9654541015625
+        },
+        "label": {
+          "x": 544.046142578125,
+          "y": 856.1405029296875,
+          "width": 42.14996337890625,
+          "height": 27,
+          "top": 856.1405029296875,
+          "right": 586.1961059570312,
+          "bottom": 883.1405029296875,
+          "left": 544.046142578125
+        },
+        "gap": 8.22503662109375
+      },
+      {
+        "id": "arms",
+        "circle": {
+          "x": 558.9654541015625,
+          "y": 571.5726318359375,
+          "width": 12.47381591796875,
+          "height": 12.4737548828125,
+          "top": 571.5726318359375,
+          "right": 571.4392700195312,
+          "bottom": 584.04638671875,
+          "left": 558.9654541015625
+        },
+        "label": {
+          "x": 545.046142578125,
+          "y": 592.2714233398438,
+          "width": 41.14996337890625,
+          "height": 27,
+          "top": 592.2714233398438,
+          "right": 586.1961059570312,
+          "bottom": 619.2714233398438,
+          "left": 545.046142578125
+        },
+        "gap": 8.22503662109375
+      }
+    ],
+    "freeCentreDrag": {
+      "chest": 52.77380371093744,
+      "back": 0,
+      "shoulders": 0,
+      "legs": 0,
+      "arms": 0,
+      "pectoralis_major": 51.895337732392406,
+      "serratus_anterior": 51.895337732392406,
+      "latissimus_dorsi": 0,
+      "trapezius": 0,
+      "rhomboids": 0,
+      "erector_spinae": 0,
+      "deltoid_anterior": 0,
+      "deltoid_lateral": 0,
+      "deltoid_posterior": 0,
+      "gluteus_maximus": 0,
+      "gluteus_medius": 0,
+      "quadriceps": 0,
+      "hamstrings": 0,
+      "adductors": 0,
+      "calves": 0,
+      "biceps_brachii": 0,
+      "triceps_brachii": 0,
+      "brachialis": 0
+    },
+    "closeApproach": {
+      "targetScreenDisplacement": 35.14634774794763,
+      "farBack": 0,
+      "farLegs": 0,
+      "circleGap": 23.752319718128078
+    },
+    "dropMinimumGap": 23.764043518275166,
+    "consecutiveGesture": {
+      "chest": 0,
+      "back": 44.99999999999995,
+      "shoulders": 0,
+      "legs": 0,
+      "arms": 0,
+      "pectoralis_major": 0,
+      "serratus_anterior": 0,
+      "latissimus_dorsi": 43.6477528139286,
+      "trapezius": 43.6477528139286,
+      "rhomboids": 43.6477528139286,
+      "erector_spinae": 43.647752813928165,
+      "deltoid_anterior": 0,
+      "deltoid_lateral": 0,
+      "deltoid_posterior": 0,
+      "gluteus_maximus": 0,
+      "gluteus_medius": 0,
+      "quadriceps": 0,
+      "hamstrings": 0,
+      "adductors": 0,
+      "calves": 0,
+      "biceps_brachii": 0,
+      "triceps_brachii": 0,
+      "brachialis": 0
+    },
+    "occupantLeaves": {
+      "distanceBeforeLeaving": 35.93247637502291,
+      "distanceAfterLeaving": 0.026125299706325558,
+      "farBack": 0,
+      "farLegs": 0
+    },
+    "fastSweep": {
+      "peakTargetDisplacement": 27.2146188593751,
+      "back": 0,
+      "legs": 0
+    },
+    "zoomed": {
+      "scale": 1.44,
+      "targetDisplacement": 67.36122895170575,
+      "circleGap": 51.90408409798735
+    },
+    "edge": {
+      "circleGap": 23.464941101653366
+    },
+    "groupCollision": {
+      "chest": 0,
+      "back": 0,
+      "shoulders": 0,
+      "legs": 0,
+      "arms": 351.40717894212224,
+      "pectoralis_major": 0,
+      "serratus_anterior": 0,
+      "latissimus_dorsi": 0,
+      "trapezius": 0,
+      "rhomboids": 0,
+      "erector_spinae": 0.02262138124356163,
+      "deltoid_anterior": 0,
+      "deltoid_lateral": 0,
+      "deltoid_posterior": 0,
+      "gluteus_maximus": 0,
+      "gluteus_medius": 0,
+      "quadriceps": 0,
+      "hamstrings": 0,
+      "adductors": 0,
+      "calves": 0,
+      "biceps_brachii": 351.37970831656924,
+      "triceps_brachii": 351.37970831656924,
+      "brachialis": 326.8794227908007
+    }
+  },
+  "jsErrors": [],
+  "result": "PASS"
+}

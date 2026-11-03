@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "blank personal plan and logs, 24 exercises, correct view tabs; existing custom action restored",
+    "library search and add, no guessed initial load, editable weight and increment",
+    "reasoned priority suggestion, preview and cancel do not mutate, explicit apply changes order",
+    "actual sets on two dates trigger the configured increment; planned weights change only after confirmation",
+    "this-week completed sets are distinct from planned sets; previous-week history excluded",
+    "day plan graph, role highlights and full-catalogue graph search",
+    "export backup, invalid import preserves data, valid import requires review, user text escaped and identical logs deduplicated",
+    "undo restores the previous plan without rolling back completed training logs",
+    "real browser close/reopen restores plan, loads and logs; old personal-action storage unchanged",
+    "demo changes never write personal storage; exit restores the real plan",
+    "simulated storage failure leaves saved state intact",
+    "aligned desktop and 390px layouts, library modal and reduced-motion browser check"
+  ],
+  "jsErrors": []
+}

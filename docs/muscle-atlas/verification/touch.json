@@ -1,0 +1,6 @@
+{
+  "checks": [
+    "native touch drag finishes before pinch; custom action drop position persists; zoom works and dragging state clears"
+  ],
+  "jsErrors": []
+}

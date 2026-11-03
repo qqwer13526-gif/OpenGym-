@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "offline package loads without network; self-created action and plan overlay share one graph node",
+    "changing load convention clears the old planned load instead of silently reinterpreting kilos",
+    "removing the last planned action preserves completed logs and leaves them accessible in history",
+    "machine identity is entered for the plan and prefilled in the actual record",
+    "corrupted stored plan remains untouched; editing is blocked until explicit backup repair"
+  ],
+  "jsErrors": [],
+  "externalRequests": 0
+}

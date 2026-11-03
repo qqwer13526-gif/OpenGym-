@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>FitPilot · 训练计划</title>
+<style>
+:root{--bg:#0f0f13;--surface:#15161a;--text:#dbe6f9;--muted:#858c98;--line:#27292e;--accent:#d2dcef;font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--text);background:var(--bg);font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{color:inherit;cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:5px}button{border:0;background:none}a{color:inherit;text-decoration:none}svg{display:block}.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.shell{display:grid;grid-template-columns:72px minmax(0,1fr);height:100dvh;min-height:700px;overflow:hidden}.rail{background:#121316;border-right:1px solid var(--line);display:flex;align-items:center;flex-direction:column;padding:24px 0;gap:25px;z-index:3}.mark{width:36px;height:36px;border-radius:12px;background:var(--accent);color:#1c1e22;display:grid;place-items:center;font-size:20px;font-weight:800;letter-spacing:-3px;padding-right:3px}.rail-divider{height:1px;background:#2c2e33;width:23px;margin:8px}.rail-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;color:#757a85}.rail-btn.active{background:#26282d;color:var(--accent);position:relative}.rail-btn.active:before{content:"";position:absolute;left:-14px;width:3px;height:20px;background:var(--accent);border-radius:3px}.rail-foot{margin-top:auto;writing-mode:vertical-rl;font-size:10px;letter-spacing:3px;color:#585c65}.app{display:flex;min-width:0;min-height:0;flex-direction:column}.topbar{height:76px;flex-shrink:0;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 34px;gap:15px;background:#121216}.brand{font-size:21px;font-weight:650;letter-spacing:-.7px}.brand em{font-style:normal;color:#9da4b3;font-weight:400;margin-left:12px;font-size:14px;letter-spacing:0}.top-note{font-size:11px;letter-spacing:1.5px;border:1px solid #35383e;color:#b7bfd0;padding:4px 9px;border-radius:5px}.top-links{display:flex;gap:27px;margin-left:auto;font-size:13px;color:#8e95a3;align-items:center}.top-links .selected{color:#d4dff1}.offline-dot{width:6px;height:6px;border-radius:50%;background:#b2bbcb;display:inline-block;margin-right:7px}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 326px;min-height:0;flex:1}.explorer{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}.heading{padding:32px 34px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}.eyebrow{font-size:10px;letter-spacing:2.7px;color:#9da5b3;text-transform:uppercase;margin-bottom:11px}.heading h1{font-size:27px;line-height:1.15;margin:0 0 11px;font-weight:550;letter-spacing:1px}.heading p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}.search-wrap{position:relative;width:244px;flex-shrink:0}.search{height:41px;border:1px solid #32353b;border-radius:9px;background:#191a1e;display:flex;gap:9px;padding:0 12px;align-items:center;color:#9299a7}.search input{border:0;outline:0;background:none;min-width:0;width:100%;color:#dbe6f9;font-size:12px}.search input:focus-visible{outline:0}.search:focus-within{border-color:#959caa}.search kbd{font-size:11px;border:1px solid #373940;padding:0 5px;border-radius:3px;color:#767c87}.search-results{position:absolute;top:48px;left:0;right:0;padding:6px;background:#1d1e22;border:1px solid #3a3c43;border-radius:10px;z-index:9;box-shadow:0 16px 36px #00000288;max-height:320px;overflow:auto}.search-results[hidden]{display:none}.search-results button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px;border-radius:6px;font-size:12px}.search-results button:hover{background:#32353b}.search-results small{color:#8f96a4;margin-left:auto;font-size:10px}.search-results p{padding:10px;margin:0;color:#a4acbb;font-size:12px}
+.toolbar{display:flex;align-items:center;gap:6px;padding:0 34px 14px;border-bottom:1px solid #222429;flex-wrap:wrap}.chip{font-size:12px;color:#a0a8b7;padding:7px 12px;border:1px solid transparent;border-radius:6px;display:flex;align-items:center;gap:7px;white-space:nowrap}.chip:active,.zoom-tools button:active{transform:scale(.96)}.chip:hover{background:#1f2125}.chip.active{border-color:#43474e;background:#24262b;color:#d4def1}.dot{width:6px;height:6px;background:var(--c,#c0cadb);border-radius:50%;display:inline-block}.aux{margin-left:auto;font-size:11px;padding:7px 8px;color:#a7afbe;display:flex;gap:7px;align-items:center}.aux .indicator{width:25px;height:14px;border-radius:10px;background:#33353b;position:relative;transition:background .18s}.aux .indicator:after{content:"";position:absolute;left:3px;top:3px;width:8px;height:8px;background:#9ba2b1;border-radius:50%;transition:transform .18s}.aux[aria-pressed=true] .indicator{background:#4c5058}.aux[aria-pressed=true] .indicator:after{transform:translateX(11px);background:#d3ddef}
+.stage{flex:1;min-height:340px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 28% 34%,#21232722,transparent 42%),radial-gradient(ellipse at 76% 70%,#2c2e3328,transparent 42%),#101014}.stage:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#787e8a25 .65px,transparent .65px);background-size:25px 25px;mask-image:radial-gradient(ellipse,#00000288,transparent 75%)}#graph{width:100%;height:100%;position:absolute;inset:0;touch-action:none;cursor:grab;user-select:none}#graph:active{cursor:grabbing}.graph-edge{fill:none;stroke:#9ea6b5;stroke-width:1;opacity:.13;transition:opacity .2s,stroke .2s,stroke-width .2s}.graph-edge.secondary{stroke-dasharray:4 6;opacity:.055}.graph-edge.dim{opacity:.025}.graph-edge.lit{opacity:.78;stroke-width:1.55;stroke:var(--edge-color,#ced8ea)}.graph-edge.lit.secondary{opacity:.5;stroke-width:1.15}.graph-edge.membership.lit{opacity:.4}.node{cursor:pointer;outline:none;transition:opacity .2s}.node .node-core{fill:var(--node-color);transition:fill .2s,filter .2s}.node.exercise .node-core{fill:#202126;stroke:#89909c;stroke-width:1.35}.node .node-label{fill:#b2bacb;font-size:15px;font-weight:400;letter-spacing:.2px;text-anchor:middle;paint-order:stroke;stroke:#101014;stroke-width:5px;stroke-linejoin:round}.node.exercise .node-label{font-size:14px;fill:#9aa1b0}.node .en-label{font-size:10px;fill:#787e8a;letter-spacing:2px;text-anchor:middle}.node.group .node-label{font-size:27px;fill:#e1ecff;font-weight:500;letter-spacing:3px}.node .selection-ring{fill:none;stroke:var(--node-color);opacity:0;transition:opacity .2s;stroke-width:1}.node .aura{fill:var(--node-color);opacity:.045}.node .hub-ring{fill:none;stroke:var(--node-color);opacity:.2;stroke-width:1}.node.dim{opacity:.16}.node.connected .node-label{fill:#d8e3f6}.node.focus .selection-ring,.node:focus-visible .selection-ring{opacity:1}.node.focus .node-core{filter:url(#nodeGlow);fill:var(--node-color);stroke:var(--node-color)}.node.focus .node-label{fill:#e3eeff;font-weight:600}.node:hover .node-core{filter:url(#nodeGlow)}.node:hover .node-label{fill:white}.node .hit{fill:transparent}.halo-text{font-size:10px;letter-spacing:3px;fill:#4a4e56;text-anchor:middle}.stage-note{position:absolute;left:27px;top:19px;font-size:10px;letter-spacing:1.3px;color:#6b707b;pointer-events:none;display:flex;gap:8px;align-items:center}.stage-note i{width:5px;height:5px;background:#9ca4b2;border-radius:50%}.zoom-tools{position:absolute;bottom:23px;left:26px;border:1px solid #373940;border-radius:9px;background:#191a1eeb;display:flex;align-items:center;padding:4px;gap:2px;box-shadow:0 8px 20px #00000222}.zoom-tools button{width:33px;height:32px;display:grid;place-items:center;color:#a9b1c1;border-radius:5px}.zoom-tools button:hover{background:#2e3036;color:#dbe5f9}.zoom-tools span{font-size:10px;min-width:38px;text-align:center;color:#8f95a3}.zoom-divider{width:1px;height:16px;background:#383a41;margin:0 4px}.graph-legend{position:absolute;bottom:29px;right:27px;display:flex;gap:17px;align-items:center;font-size:10px;color:#7a808b;pointer-events:none}.graph-legend span{display:flex;align-items:center;gap:6px}.legend-shape{width:6px;height:6px;border-radius:50%;background:#a6aebe}.legend-shape.hollow{background:none;border:1px solid #9fa6b5;border-radius:1px;transform:rotate(45deg)}.legend-line{width:17px;height:1px;background:#9fa6b5}.legend-line.dashed{background:repeating-linear-gradient(to right,#9fa6b5 0 3px,transparent 3px 6px)}.statusbar{height:39px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;color:#6d727d;border-top:1px solid #27292e;padding:0 29px;letter-spacing:.3px;background:#131418}.statusbar strong{font-weight:400;color:#9ca4b2}
+.details{border-left:1px solid var(--line);background:#15161a;display:flex;flex-direction:column;min-height:0;position:relative}.detail-top{height:52px;flex-shrink:0;padding:0 24px;border-bottom:1px solid #282a2f;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.8px;color:#8c93a0}.detail-top button{width:30px;height:30px;display:grid;place-items:center;color:#8a919e;border-radius:6px}.detail-top button:hover{background:#2a2b31}.detail-content{flex:1;min-height:0;overflow:auto;padding:26px 25px 28px;scrollbar-width:thin;scrollbar-color:#42454c transparent}.detail-kicker{color:#aab3c2;font-size:10px;letter-spacing:1.3px;margin-bottom:13px;display:flex;align-items:center;gap:7px}.detail-content h2{font-size:25px;letter-spacing:.5px;line-height:1.45;font-weight:500;margin:0 0 7px}.english{color:#767c87;font-size:11px;letter-spacing:.6px;line-height:1.6}.detail-description{font-size:12px;color:#9299a7;line-height:1.95;margin:17px 0 18px}.body-frame{border:1px solid #2f3137;background:radial-gradient(ellipse at 50% 50%,#2f313770,transparent 65%),#141519;border-radius:12px;position:relative;margin:23px 0;padding:15px 10px 8px}.body-frame svg{height:205px;width:100%;margin:auto;overflow:visible}.body-caption{font-size:9px;letter-spacing:1px;color:#696e78;text-align:center;margin:5px 0}.body-part{fill:#292b30;stroke:#4d5059;stroke-width:.65;transition:fill .25s,stroke .25s;cursor:pointer}.body-part.active{fill:var(--body-color);fill-opacity:.4;stroke:var(--body-color);stroke-width:1}.body-structure{stroke:#4b4e56;stroke-width:1.1;fill:none}.detail-section{margin-top:23px}.section-label{display:flex;align-items:center;gap:7px;margin-bottom:12px;font-size:11px;color:#b5bdce;letter-spacing:.7px}.role-line{width:15px;height:1px;background:#aab2c2}.role-line.secondary{background:repeating-linear-gradient(to right,#9fa6b5 0 3px,transparent 3px 5px)}.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{font-size:11px;padding:6px 9px;border:1px solid #35373d;border-radius:5px;color:#b7c0d0;display:flex;align-items:center;gap:6px;line-height:1.2}.tag:hover{background:#2b2d32;border-color:#6b717b}.equipment{display:inline-flex;align-items:center;gap:6px;background:#25272b;color:#a1a9b8;border-radius:4px;font-size:10px;padding:5px 8px;margin-top:13px}.detail-divider{height:1px;background:#2d2f35;margin:24px 0 21px}.action-row{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid #27292f;width:100%;text-align:left;font-size:12px}.action-row .arrow{margin-left:auto;color:#7d838f}.action-row small{display:block;font-size:10px;color:#717782;margin-top:3px}.action-row:hover{color:#d2dcee}.tips{padding-left:18px;margin:0;color:#959caa;font-size:11px;line-height:1.95}.tips li{margin:7px 0}.source-link{display:flex;justify-content:space-between;align-items:center;border:1px solid #393c42;border-radius:7px;padding:12px;color:#c6d0e2;font-size:11px;margin-top:22px}.source-link:hover{background:#2b2d32}.source-note{font-size:10px;color:#747985;line-height:1.8;margin-top:12px}.welcome-number{font-size:60px;line-height:1.1;color:#b9c2d2;font-weight:300;letter-spacing:-4px;margin-top:25px}.welcome-number span{color:#646973;font-size:11px;letter-spacing:1px;margin-left:13px}.welcome-heading{font-size:25px;line-height:1.7;font-weight:400;margin-top:16px}.guide-step{display:flex;gap:12px;font-size:11px;color:#99a1af;line-height:1.9;margin:15px 0}.guide-step b{font-size:10px;color:#b5bece;font-weight:500;border:1px solid #3e4047;border-radius:50%;width:20px;height:20px;line-height:18px;flex-shrink:0;text-align:center}.try-button{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;border:1px solid #3a3d43;background:#26282d;color:#c8d2e4;border-radius:8px;padding:12px;font-size:12px;margin-top:22px}.detail-footer{margin-top:auto;border-top:1px solid #2b2d33;font-size:9px;line-height:1.8;color:#6c717b;padding:15px 25px;flex-shrink:0}.help-popover{position:fixed;left:85px;bottom:30px;background:#25272b;border:1px solid #4a4e56;box-shadow:0 15px 40px #00000288;border-radius:12px;width:280px;padding:19px;z-index:20;font-size:12px;color:#b2baca;line-height:2}.help-popover[hidden]{display:none}.help-popover strong{color:#dde7fb;font-weight:500}.help-popover kbd{background:#383b42;padding:2px 6px;border-radius:4px;font-size:10px}.empty-text{font-size:12px;color:#8e94a2;line-height:2}
+@media(min-width:1650px){.workspace{grid-template-columns:minmax(0,1fr) 360px}.detail-content{padding:32px}.heading{padding-top:36px;padding-bottom:28px}.heading h1{font-size:30px}.body-frame svg{height:230px}}
+@media(max-width:1150px){.workspace{grid-template-columns:minmax(0,1fr) 290px}.heading{padding:25px 22px 18px}.toolbar{padding-left:20px;padding-right:20px}.search-wrap{width:190px}.heading h1{font-size:24px}.brand em{display:none}.top-links{gap:17px}.graph-legend{right:15px;gap:9px}.graph-legend span:nth-child(2){display:none}.detail-content{padding:23px 20px}.aux{margin-left:0}}
+@media(max-width:820px){.shell{grid-template-columns:1fr;height:auto;min-height:100dvh;overflow:visible}.rail{display:none}.topbar{height:65px;padding:0 21px;gap:12px}.top-links{font-size:11px}.top-links .local-label{display:none}.workspace{grid-template-columns:1fr}.heading{padding:27px 22px 20px;align-items:flex-start;flex-wrap:wrap;gap:18px}.heading h1{font-size:27px}.search-wrap{width:100%;max-width:none}.toolbar{padding:0 16px 14px;gap:3px}.chip{padding:8px 10px}.aux{margin-left:auto}.stage{height:540px;min-height:540px;flex:none}.statusbar{padding:0 20px}.statusbar .status-hint{display:none}.details{border-left:0;border-top:1px solid var(--line);min-height:400px}.detail-content{padding:24px;overflow:visible}.detail-top{padding:0 23px}.body-frame{max-width:330px}.detail-footer{padding:16px 24px}.graph-legend{bottom:75px;left:24px;right:auto;font-size:9px}.zoom-tools{bottom:20px}.stage-note{left:23px;top:18px}.help-popover{left:20px;bottom:20px}.node .node-label{font-size:17px}.node.exercise .node-label{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style><style>
+.layer-controls{display:flex;align-items:center;gap:9px;padding:10px 28px;border-bottom:1px solid #2a2c31;background:#16171b;font-size:11px;flex-wrap:wrap}.layer-controls button,.dialog-actions button,.manager-tools button,.form-actions button,.edit-action{border:1px solid #3f4249;border-radius:7px;padding:8px 11px;color:#c9d3e5;background:#26272c}.layer-controls #layerToggle{background:#1e1f23;color:#acb4c4;border-color:#373a41}.layer-controls #layerToggle[aria-pressed=true]{background:#36393f;color:#dde8fb;border-color:#888f9c}.layer-controls span#actionCount{margin-left:5px;color:#cdd6e9}.layer-controls #saveStatus{margin-left:auto;color:#959caa;max-width:260px}.layer-controls #saveStatus.error{color:#b4bdcd}.user-badge{display:inline-block;border:1px solid #666a74;border-radius:4px;color:#c5cee0;font-size:10px;padding:3px 7px;margin-top:10px}.node.exercise .node-label{fill:#cbd5e7}.node.exercise .node-core{stroke:#cbd5e7}.layer-controls button:active,dialog button:active{transform:scale(.97)}dialog{color:#dae5f8;background:#1b1c20;border:1px solid #4a4e56;border-radius:18px;padding:23px;max-width:calc(100vw - 28px);width:610px;max-height:86dvh;overflow:auto;box-shadow:0 24px 100px #000002bb}dialog::backdrop{background:#060709c4;backdrop-filter:blur(5px)}dialog h2{font-size:22px;font-weight:500;margin:0}dialog p{font-size:12px;color:#a3abba;line-height:1.9}.dialog-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.dialog-title button{font-size:22px;color:#b0b9c9;width:35px;height:35px}.form-field{display:block;margin:16px 0;font-size:12px;color:#bcc5d6}.form-field input,.form-field textarea,.form-field select{display:block;width:100%;margin-top:7px;background:#121317;border:1px solid #41444b;color:#d9e3f7;border-radius:7px;padding:10px;font:inherit}.form-field textarea{min-height:75px;resize:vertical}.muscle-picker{border:1px solid #3b3e45;border-radius:10px;overflow:hidden}.picker-head,.picker-row{display:grid;grid-template-columns:1fr 120px;align-items:center;gap:16px;padding:9px 12px;font-size:12px}.picker-head{background:#282a2f;color:#9299a6}.picker-row:nth-child(odd){background:#222428}.picker-row select{background:#15161a;color:#cbd5e7;border:1px solid #45484f;padding:5px;border-radius:5px;font:inherit}.picker-group{padding:7px 12px;font-size:10px;letter-spacing:1px;color:#bac3d4;background:#2b2d32}.form-actions,.manager-tools,.dialog-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:17px}.form-actions{justify-content:flex-end}.form-actions .secondary-btn{border-color:#42454d;background:transparent;color:#b1b9c9}.form-error{min-height:18px;color:#b3bbcc;font-size:12px;line-height:1.7;margin:14px 0 0}.manager-tools{margin-bottom:20px}.saved-action{display:flex;align-items:center;gap:8px;padding:13px 0;border-bottom:1px solid #36393f}.saved-action .name{font-size:13px;flex:1;min-width:0;overflow-wrap:anywhere}.saved-action small{display:block;margin-top:4px;color:#8e95a2;font-size:10px}.saved-action button{font-size:11px;color:#c9d3e5;border:1px solid #44474e;border-radius:6px;padding:6px 8px}.saved-action .danger{color:#b8c1d1;border-color:#494c54}.import-review{background:#2b2d32;border:1px solid #5a5f68;border-radius:10px;padding:14px;font-size:12px;line-height:1.9;color:#c2cbdd}.import-review[hidden]{display:none}.empty-actions{border:1px dashed #484c53;border-radius:12px;padding:26px;text-align:center;color:#a1a8b7;font-size:12px;line-height:2}.empty-actions strong{color:#d8e2f5;font-size:16px;font-weight:500}.action-detail-buttons{display:flex;gap:10px;margin-top:20px}.physics-hint{color:#7f8591}.node.dragging .node-core{filter:url(#nodeGlow)}@media(max-width:820px){.layer-controls{padding:12px 16px;gap:8px}.layer-controls #saveStatus{flex-basis:100%;max-width:none;margin-left:0}.picker-head,.picker-row{grid-template-columns:1fr 110px}.stage{height:540px}dialog{padding:18px}.manager-tools button{font-size:11px}}@media(prefers-reduced-motion:reduce){dialog::backdrop{backdrop-filter:none}}
+
+</style><style>
+
+/* A quiet canvas; the graph carries the hierarchy. */
+.shell{grid-template-columns:minmax(0,1fr)}.rail{display:none}.topbar{height:58px;padding:0 28px}.brand{font-size:18px}.top-links .selected{display:none}.local-label{font-size:11px}.heading{padding:22px 28px 18px}.heading h1{font-size:23px;margin:0;letter-spacing:0}.search-wrap{width:230px}.toolbar{display:none}.workspace{grid-template-columns:minmax(0,1fr) 300px}.layer-controls{padding:0 28px 15px;background:#0f0f13;border:0;gap:8px}.layer-controls #addAction{order:0;margin-left:auto}.layer-controls #manageActions{order:1;background:transparent;color:#9ca3b1;border-color:#313339}.layer-controls #saveStatus{order:2;flex-basis:100%;font-size:10px;margin:0;max-width:none}.layer-controls #saveStatus:empty{display:none}.layer-controls #examplesToggle,.layer-controls #layerToggle{background:transparent;color:#9ba2b0;border-color:#34363c}.layer-controls #examplesToggle[aria-pressed=true],.layer-controls #layerToggle[aria-pressed=true]{background:#282a2f;border-color:#686d77;color:#d4def1}.layer-controls button{font-size:11px;padding:8px 10px}.layer-controls button span{font-size:10px;opacity:.65;margin-left:4px}.stage{background:#101014}.stage:before{display:none}.stage-note{display:none}.node.group .node-label{font-size:24px;letter-spacing:0;stroke:none;fill:var(--node-color)}.node.group.focus .node-core{fill-opacity:.2}.node.group .selection-ring{stroke-width:1}.node .aura{opacity:.02}.node.exercise .node-label{font-size:15px;fill:#b6bfcf}.node.exercise .node-core{stroke:#b5becf;stroke-width:1.5}.node.exercise.focus .node-label{fill:#e3edff}.graph-edge.primary{opacity:.13}.graph-edge.secondary{opacity:.09;stroke-dasharray:6 5}.graph-edge.stability{opacity:.09;stroke-dasharray:1 7;stroke-linecap:round}.graph-edge.lit.primary{opacity:.85;stroke-width:1.8}.graph-edge.lit.secondary{opacity:.65;stroke-width:1.4}.graph-edge.lit.stability{opacity:.65;stroke-width:1.4}.graph-edge.dim{opacity:.02}.node.dim{opacity:.18}.details{background:#131418}.detail-top{font-size:11px;letter-spacing:0;height:48px}.detail-content{padding:25px 22px}.detail-content h2{font-size:23px}.detail-kicker{font-size:11px;letter-spacing:0;margin-bottom:10px}.detail-description{line-height:1.9;margin:16px 0;color:#99a0ae}.detail-section{margin-top:25px}.quiet-note{font-size:11px;color:#818793;line-height:1.9;margin:12px 0}.example-list{margin-top:26px}.action-row{padding:14px 0}.action-row small{font-size:10px}.detail-footer{font-size:10px;line-height:1.7;padding:17px 22px}.graph-legend{gap:13px}.role-line.stability{height:2px;background:repeating-linear-gradient(to right,#b6bfd0 0 2px,transparent 2px 6px)}.source-details{font-size:11px;color:#848b97;line-height:2}.source-details summary{cursor:pointer}.source-details a{display:block;color:#b9c2d2;padding:3px 0}.source-details a:hover{text-decoration:underline}.statusbar{height:34px;padding:0 24px}.statusbar .status-hint{display:none}
+@media(max-width:1150px) and (min-width:821px){.workspace{grid-template-columns:minmax(0,1fr) 270px}.heading,.layer-controls{padding-left:20px;padding-right:20px}.search-wrap{width:190px}.detail-content{padding:22px 18px}}
+@media(max-width:820px){.shell{height:auto;min-height:100dvh}.topbar{padding:0 20px;height:54px}.workspace{grid-template-columns:1fr}.heading{padding:21px 20px 15px;flex-wrap:nowrap;align-items:center;gap:12px}.heading h1{font-size:20px;white-space:nowrap}.search-wrap{width:190px}.search{height:36px}.search kbd{display:none}.layer-controls{padding:0 16px 12px;gap:6px}.layer-controls button{padding:8px;font-size:10px}.stage{height:380px;min-height:380px}.details{min-height:260px}.detail-content{padding:23px}.graph-legend{bottom:23px;left:auto;right:20px}.node .node-label{font-size:26px}.node.exercise .node-label{font-size:26px}.node.group .node-label{font-size:28px}.detail-footer{padding:15px 23px}.example-list{margin-top:15px}.statusbar{gap:10px}.statusbar #graphCount{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.statusbar #selectionStatus{max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+
+</style><style>
+[hidden]{display:none!important}
+:root{font-family:"Segoe UI","Microsoft YaHei",sans-serif;--accent:#d2dcef}
+.shell{height:auto;min-height:100dvh;overflow:visible}.app{min-height:100dvh}.topbar{height:64px;position:sticky;top:0;z-index:12;padding:0 36px;background:#121216f5}.brand{font-size:21px;letter-spacing:-.8px}.view-tabs{display:flex;gap:6px;margin-left:48px;height:100%;align-items:center}.view-tabs button{height:38px;padding:0 20px;color:#868c99;font-size:14px;border-radius:8px}.view-tabs button[aria-selected=true]{color:#e2edff;background:#27292e}.header-actions{display:flex;align-items:center;gap:12px;margin-left:auto}.header-actions button{font-size:14px;color:#c6d0e1;padding:8px 12px;border-radius:7px}.header-actions button:hover{background:#282a30}.header-actions #planMenuButton{font-size:22px;letter-spacing:2px;line-height:18px}.workspace{height:calc(100dvh - 64px);min-height:650px;flex:none}.heading h1{font-size:24px}.details .detail-footer,.statusbar,.details .detail-kicker{display:none}.detail-content h2{font-size:25px}.detail-description{font-size:14px}.quiet-note,.section-label,.tag,.source-details{font-size:12px}.detail-top{font-size:13px}.layer-controls #manageActions{display:none}.layer-controls #saveStatus{font-size:12px}.layer-controls button{font-size:12px}.node .node-label{font-family:"Segoe UI","Microsoft YaHei",sans-serif}.source-details p{line-height:1.8}.graph-legend{font-size:12px}
+#planView{padding:40px 40px 56px;width:100%;max-width:1560px;margin:0 auto}.plan-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:30px}.plan-heading h1{font-size:34px;font-weight:550;letter-spacing:-.8px;margin:0 0 12px}.goal-button{font-size:14px;color:#a1a9b8;padding:0}.goal-button span{margin-left:8px}.plan-head-tools{display:flex;gap:12px}.plan-head-tools>button{font-size:14px;padding:12px 17px;border:1px solid #35383e;border-radius:9px}.primary-button{background:#d2dcef!important;color:#1b1d21!important;border:1px solid #d2dcef!important;border-radius:9px;padding:12px 18px;font-size:14px;font-weight:600}.primary-button:hover{background:#dce7fb!important}.week-tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid #2f3137;background:#15161a;border-radius:14px;padding:6px;gap:5px;margin-bottom:30px}.week-tabs button{padding:16px 8px;text-align:left;border:1px solid transparent;border-radius:9px;color:#8f96a4;display:flex;align-items:center;justify-content:center;gap:18px}.week-tabs button span{font-size:15px}.week-tabs button b{font-size:12px;font-weight:400;color:#6d737d}.week-tabs button[aria-selected=true]{background:#292b30;border-color:#555962;color:#dce6fa}.week-tabs button[aria-selected=true] b{color:#b6bfd0}.plan-columns{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:36px;align-items:start}.session-panel{min-width:0}.session-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:32px;margin:0 0 20px}.session-heading h2,.feedback-heading h2,.weekly-coverage h2{font-size:19px;font-weight:550;margin:0}.session-heading>span{font-size:13px;color:#8e95a2}.session-table{border-top:1px solid #34363c}.plan-table-head,.plan-row{display:grid;grid-template-columns:minmax(0,1fr) 80px 54px 78px 90px;gap:16px;align-items:center}.plan-table-head{font-size:12px;color:#808693;padding:18px 0 12px}.plan-table-head span:not(:first-child){text-align:center}.plan-row{padding:22px 0;border-bottom:1px solid #292b31}.plan-row input{min-width:0;width:100%;height:40px;background:#191a1e;border:1px solid #373940;border-radius:7px;text-align:center;color:#dbe6f9;font-size:14px;padding:4px}.plan-row input:hover{border-color:#6a6f7a}.plan-action-title{min-width:0}.plan-action-title>button{font-size:16px;font-weight:500;text-align:left;padding:0;line-height:1.5;overflow-wrap:anywhere}.plan-action-title>button:hover{color:var(--accent)}.mode-label{display:block;font-size:12px;color:#818894;margin-top:5px}.row-tools{display:flex;align-items:center;justify-content:flex-end;gap:3px}.row-tools button{font-size:12px;padding:10px 7px;color:#b7c0d0;white-space:nowrap}.row-tools button:last-child{color:#898f9c;font-size:18px;padding:8px 4px}.plan-empty{min-height:370px;border:1px dashed #35383e;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:radial-gradient(ellipse at 50% 35%,#2b2d3232,transparent 65%)}.empty-orbit{width:64px;height:64px;border:1px solid #41444b;border-radius:50%;display:grid;place-items:center;font-size:28px;color:#b2bacb;margin-bottom:4px}.plan-empty h3{font-size:22px;font-weight:400;color:#b4bdcd;margin:0 0 10px}.text-button{font-size:13px;color:#8f96a3;padding:8px}.plan-feedback{min-width:0}.feedback-heading{display:flex;align-items:center;justify-content:space-between;min-height:32px;margin-bottom:20px}.feedback-heading>span{color:#9ca4b2;font-size:12px;border:1px solid #41444b;min-width:25px;height:25px;display:grid;place-items:center;border-radius:50%}.advice-card{padding:20px;background:#191a1e;border:1px solid #33363c;border-radius:12px;margin-bottom:12px}.advice-card h3{font-size:15px;font-weight:550;color:#d0daec;margin:0 0 10px;line-height:1.6}.advice-card p{font-size:13px;line-height:1.95;color:#979fad;margin:0}.advice-card details{margin-top:12px;color:#858b98;font-size:12px}.advice-card summary,.weekly-coverage summary{cursor:pointer}.advice-card details p{font-size:12px;padding-top:7px}.advice-button{margin-top:15px;color:#c9d3e5;font-size:13px;padding:0}.extra-advice{display:none}#adviceList.expanded .extra-advice{display:block}.more-advice{font-size:13px;padding:10px;color:#a0a7b6;width:100%;text-align:center}.weekly-coverage{margin-top:34px}.weekly-coverage h2{margin-bottom:19px}.coverage-labels,.coverage-row{display:grid;grid-template-columns:minmax(0,1fr) 60px 60px;gap:9px;align-items:center}.coverage-labels{font-size:12px;color:#797f8b;margin-bottom:9px}.coverage-labels>:not(:first-child){text-align:right}.coverage-row{width:100%;font-size:14px;padding:12px 0;border-bottom:1px solid #292b30;text-align:left}.coverage-row>span:first-child{display:flex;align-items:center;gap:9px}.coverage-row i{width:6px;height:6px;border-radius:50%}.coverage-row b{font-weight:500;text-align:right;color:#d1dbee}.coverage-row>span:last-child{text-align:right;color:#828895}.coverage-row:hover{color:var(--accent)}.weekly-coverage details{font-size:12px;color:#787e89;margin-top:15px}.weekly-coverage details p{font-size:12px;line-height:1.9}.completed-panel{margin-top:28px;color:#9299a6;font-size:14px}.completed-panel summary{cursor:pointer}.completed-panel summary span{margin-left:8px;color:#c8d2e4}.history-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 0;border-bottom:1px solid #2d2f35}.history-row strong{font-size:14px;font-weight:500;color:#bbc4d5}.history-row span{display:block;font-size:12px;margin-top:6px}.history-row button{font-size:12px;color:#898f9c}.empty-history{padding:25px 0;color:#878e9a;font-size:14px}.demo-banner{padding:13px 17px;border:1px solid #5a5e68;background:#2b2d33;color:#cdd7e9;border-radius:9px;font-size:13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:27px;gap:12px}.demo-banner button{font-size:13px;color:#dbe5f9}
+dialog{font-family:inherit;width:580px;border-radius:16px;box-shadow:0 26px 90px #00000299}dialog p{font-size:14px;line-height:1.9}dialog h2{font-size:24px}.form-field{font-size:14px}.form-field input,.form-field select{font-size:14px;padding:11px;height:43px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.form-error{font-size:13px}.form-actions button{font-size:14px;padding:10px 20px}.dialog-title{margin-bottom:20px}.dialog-title button{width:38px;height:38px}.library-toolbar{display:grid;grid-template-columns:minmax(0,1fr) 130px;gap:14px}.library-toolbar input,.library-toolbar select{height:43px;background:#141519;border:1px solid #3d4047;border-radius:8px;color:#c7d0e2;padding:9px 12px;min-width:0;font-size:14px}.library-filters{display:flex;gap:6px;flex-wrap:wrap;padding:20px 0 16px}.library-filters button{font-size:13px;color:#949ba9;border-radius:6px;padding:7px 10px;border:1px solid transparent}.library-filters button[aria-pressed=true]{background:#2d2f35;color:#d2dcee;border-color:#585c65}.library-row{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #32353b;padding:15px 0}.library-name{text-align:left;padding:0;min-width:0}.library-name strong{display:block;font-size:16px;font-weight:500;color:#d5dff2}.library-name span{display:block;font-size:12px;color:#868d9a;margin-top:6px}.library-add{border:1px solid #4b4f57;border-radius:7px;color:#ccd5e8;min-width:38px;height:36px;font-size:20px;background:#282a2f}.library-add:disabled{color:#727782;border-color:transparent;background:transparent;font-size:12px;cursor:default}.item-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px}.danger-button{color:#9aa1af;font-size:14px}.actual-head,.actual-set{display:grid;grid-template-columns:35px minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center;padding:9px 0;font-size:13px;color:#9097a4}.actual-set input{height:40px;min-width:0;width:100%;border:1px solid #3d4047;border-radius:7px;background:#141519;color:#d9e4f7;text-align:center;font-size:14px}.record-tools{display:flex;gap:20px;margin-top:13px}.record-tools button{font-size:13px;color:#b7c0d1}.backup-menu{display:grid;gap:10px}.backup-menu button{text-align:left;padding:15px;border-radius:8px;background:#25272b;color:#c5cee0;font-size:14px}#planNotice{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;background:#313339;border:1px solid #676c76;color:#d9e3f7;padding:13px 21px;border-radius:10px;font-size:14px;max-width:calc(100vw - 32px);box-shadow:0 15px 50px #00000288}#planNotice.error{background:#282a2f;border-color:#636872;color:#c1cbdc}
+@media(max-width:1150px){#planView{padding:30px 25px 45px}.plan-columns{grid-template-columns:minmax(0,1fr) 280px;gap:25px}.plan-table-head,.plan-row{grid-template-columns:minmax(0,1fr) 65px 45px 65px 76px;gap:10px}.plan-action-title>button{font-size:14px}.week-tabs button{gap:10px}.advice-card{padding:17px}.topbar{padding:0 25px}.plan-heading h1{font-size:30px}}
+@media(max-width:900px){.plan-columns{grid-template-columns:1fr}.plan-feedback{display:grid;grid-template-columns:1fr 1fr;gap:0 25px}.feedback-heading,#adviceList,.more-advice{grid-column:1}.weekly-coverage{grid-column:2;grid-row:1/4;margin-top:0}.week-tabs button{flex-direction:column;gap:8px}.workspace{min-height:650px}}
+@media(max-width:820px){.workspace{height:auto;min-height:0}.topbar{padding:0 16px;height:60px;gap:0}.brand{font-size:18px}.view-tabs{margin-left:16px;gap:0}.view-tabs button{font-size:12px;padding:0 11px;height:34px}.header-actions{gap:0}.header-actions button{font-size:12px;padding:6px}.header-actions #planMenuButton{font-size:20px;padding-left:10px}.detail-content h2{font-size:23px}.detail-content{overflow:visible}.heading{padding:20px 16px 16px}.heading h1{font-size:21px}.layer-controls{padding-left:16px;padding-right:16px}.layer-controls button{font-size:11px}#planView{padding:27px 16px 35px}.plan-heading{margin-bottom:23px;align-items:flex-start;gap:12px}.plan-heading h1{font-size:27px}.goal-button{font-size:13px}.plan-head-tools{gap:7px;flex-direction:column;align-items:stretch}.plan-head-tools>button{font-size:12px;padding:9px 10px}.week-tabs{gap:2px;padding:4px;margin-bottom:25px}.week-tabs button{padding:11px 3px}.week-tabs button span{font-size:13px}.week-tabs button b{font-size:11px}.plan-table-head,.plan-row{grid-template-columns:minmax(0,1fr) 56px 38px 58px 36px;gap:7px}.plan-table-head{font-size:11px}.plan-row{padding:18px 0}.plan-row input{font-size:12px;height:37px;padding:2px}.plan-action-title>button{font-size:14px}.mode-label{font-size:11px;line-height:1.5}.row-tools{flex-direction:column;gap:0}.row-tools button{font-size:11px;padding:3px 0}.row-tools button:last-child{padding:1px 0;line-height:16px}.session-heading h2,.feedback-heading h2,.weekly-coverage h2{font-size:18px}.session-heading>span{font-size:12px}.plan-feedback{display:block;margin-top:8px}.feedback-heading{margin-top:5px;margin-bottom:17px}.weekly-coverage{margin-top:28px}.plan-empty{min-height:290px}.plan-empty h3{font-size:20px}.form-grid{gap:0 12px}dialog{padding:20px}.library-toolbar{grid-template-columns:minmax(0,1fr) 115px;gap:10px}.library-toolbar input,.library-toolbar select{font-size:13px}.library-filters{gap:3px}.library-filters button{font-size:12px;padding:7px 8px}.demo-banner{font-size:12px;align-items:flex-start}.demo-banner button{font-size:12px;white-space:nowrap}.source-details{font-size:13px}.tag{font-size:12px}}
+.coverage-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:19px}.coverage-heading h2{margin-bottom:0}.coverage-toggle{display:flex;border:1px solid #373940;border-radius:6px;padding:2px}.coverage-toggle button{font-size:12px;color:#838996;padding:4px 7px;border-radius:4px}.coverage-toggle button[aria-pressed=true]{color:#ced8ea;background:#2e3136}.history-row span{line-height:1.8;overflow-wrap:anywhere}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+</style><style>
+:root{--accent:#c3cbd7;--text:#e1e6ed;--muted:#8d98a7;--line:#29313b;background:#101318;color:var(--text)}
+.topbar{background:#12161bf5}.stage{background:#12161b}.stage:before{display:none}.details{background:#151a20}.shell,.app,#planView{background:#101419}
+.node.group .node-core{fill:#c2cad4;stroke:none}.node.muscle .node-core{fill:#929caa}.node.exercise .node-core{fill:#192029;stroke:#aab7c8}
+.node.group .node-label{font-size:21px;letter-spacing:0;font-weight:500;fill:#dbe1e9;stroke:#12161b;stroke-width:5px;paint-order:stroke}
+.node.muscle .node-label{font-size:15px;fill:#a9b3c0;stroke:#12161b}.node.exercise .node-label{font-size:15px;fill:#aab6c6;stroke:#12161b}
+.node .selection-ring{stroke:#c3d1e3;stroke-width:1;opacity:0}.node.focus .selection-ring{opacity:.8}.node.focus .node-core{fill:#d8e2ee;stroke:#d8e2ee;filter:none}.node:hover .node-core{fill:#e0e7f0;filter:none}
+.node.group.focus .node-core{fill-opacity:1}.node.focus .node-label,.node.connected .node-label{fill:#e3eaf3;font-weight:500}.node.dim{opacity:.27}
+.graph-edge{stroke:#8492a4;opacity:.18}.graph-edge.primary{opacity:.15}.graph-edge.secondary,.graph-edge.stability{opacity:.11}.graph-edge.lit{stroke:#b6c5d9!important;opacity:.88}.graph-edge.lit.secondary,.graph-edge.lit.stability{opacity:.65}.graph-edge.dim{opacity:.035}
+.primary-button{background:#c3ccd8!important;color:#161d26!important;border-color:#c3ccd8!important}.primary-button:hover{background:#d5deea!important}.view-tabs button[aria-selected=true]{background:#29313c;color:#e7edf5}
+.layer-controls #examplesToggle[aria-pressed=true],.layer-controls #layerToggle[aria-pressed=true],.library-filters button[aria-pressed=true]{background:#2a3441;color:#d5dfed;border-color:#536278}
+.week-tabs button[aria-selected=true]{background:#29323e;border-color:#5b6c82;color:#edf2f8}.week-tabs button[aria-selected=true] b{color:#b3c2d6}.advice-card h3,.advice-button{color:#cfdae9}.coverage-row b{color:#d6e1ed}.coverage-toggle button[aria-pressed=true]{background:#2d3745;color:#d8e3f2}
+.goal-button,.text-button,.row-tools button,.more-advice{color:#a5b4c8}.demo-banner{background:#232c37;border-color:#4d5c71;color:#c9d6e8}.demo-banner button{color:#e0e8f3}
+.form-actions button,.manager-tools button,.dialog-actions button,.edit-action,.layer-controls #addAction{background:#2b3543;border-color:#4a5b72;color:#d5dfed}.library-add{background:#2b3645;border-color:#4d6079;color:#d4e0f0}.picker-group{background:#28323f;color:#bfcde0}.user-badge{border-color:#52647b;color:#c1d1e5}
+.tag{border-color:#3a4656;color:#c1cedd}.tag:hover{background:#2d3745;border-color:#687c96}.layer-controls #saveStatus{color:#9aabc0}.layer-controls #saveStatus.error{color:#d5b8b1}.plan-row input:hover{border-color:#71849d}.source-details a{color:#b8cbe3}.form-error{color:#cdb6b2}
+#planNotice{background:#2b3644;border-color:#586e89;color:#dbe7f5}#planNotice.error{background:#302b30;border-color:#6c5d68;color:#dfcad1}
+@media(max-width:820px){.node.group .node-label{font-size:27px}.node.muscle .node-label,.node.exercise .node-label{font-size:24px}}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+<symbol id="i-nodes" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="5" r="2"/><circle cx="20" cy="5" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><path d="m6 7 4 3m4 0 4-3M6 18l4-4m4 0 4 4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 2 8M4 4v6h6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-1 .4-1 1.2-1 2.2m0 3v.1"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14"/></symbol>
+</defs></svg>
+<div class="shell">
+<nav class="rail" aria-label="预览工具"><div class="mark" aria-label="FitPilot">f.</div><div class="rail-divider"></div><button class="rail-btn active" id="overviewRail" title="肌群星图" aria-label="返回肌群星图总览"><svg class="icon"><use href="#i-nodes"/></svg></button><button class="rail-btn" id="sourcesRail" title="肌群说明" aria-label="查看肌群底图说明"><svg class="icon"><use href="#i-book"/></svg></button><button class="rail-btn" id="help" title="操作帮助" aria-label="打开操作帮助" aria-expanded="false"><svg class="icon"><use href="#i-help"/></svg></button></nav>
+<div class="app"><header class="topbar"><div class="brand">FitPilot</div><nav class="view-tabs" aria-label="主要页面"><button id="graphTab" aria-selected="true">肌群图谱</button><button id="planTab" aria-selected="false">训练计划</button></nav><div class="header-actions"><a href="/training-lab/" style="font-size:12px;color:#b9b0ca;text-decoration:none;margin-right:16px">个人训练与档案</a><button id="libraryButton">动作库</button><button id="planMenuButton" aria-label="打开计划与备份管理">···</button></div></header>
+<main class="workspace" id="graphView"><section class="explorer" aria-label="肌群关系探索">
+<div class="heading"><div><h1>肌群图谱</h1></div><div class="search-wrap"><label class="search"><svg class="icon" style="width:15px;height:15px"><use href="#i-search"/></svg><input id="search" placeholder="搜索肌群或动作" aria-label="搜索肌群或动作" autocomplete="off" aria-controls="searchResults" aria-expanded="false"><kbd>/</kbd></label><div class="search-results" id="searchResults" hidden></div></div></div>
+<div class="toolbar" id="filters" aria-label="肌群筛选"><button class="chip active" data-filter="all" aria-pressed="true">全部肌群</button></div>
+<div class="layer-controls"><button id="examplesToggle" aria-pressed="false">计划动作 <span id="visiblePlanCount">0</span></button><button id="layerToggle" aria-pressed="false">我的动作 <span id="actionCount">0</span></button><button id="manageActions" title="管理与备份">管理</button><button id="addAction">＋ 自建动作</button><span id="saveStatus" role="status"></span></div><div class="stage" id="stage"><div class="stage-note"><i></i><span id="sceneLabel">全身肌群</span></div>
+<svg id="graph" viewBox="0 0 1180 840" aria-label="可交互的肌群关系图"><title>肌群底图：点击节点高亮所属关系，拖动空白区域移动，滚轮缩放</title><defs><filter id="nodeGlow" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g id="scene"><g id="edges"></g><g id="nodes"></g></g></svg>
+<div class="zoom-tools"><button id="zoomOut" title="缩小" aria-label="缩小星图"><svg class="icon" style="width:16px"><use href="#i-minus"/></svg></button><span id="zoomPercent">100%</span><button id="zoomIn" title="放大" aria-label="放大星图"><svg class="icon" style="width:16px"><use href="#i-plus"/></svg></button><div class="zoom-divider"></div><button id="fit" title="聚焦选中关系" aria-label="聚焦选中关系"><svg class="icon" style="width:17px"><use href="#i-target"/></svg></button><button id="reset" title="重置视图" aria-label="重置星图与节点位置"><svg class="icon" style="width:16px"><use href="#i-reset"/></svg></button></div>
+<div class="graph-legend"><span><i class="legend-shape"></i>肌群节点</span><span><i class="legend-line"></i>所属关系</span></div></div>
+<footer class="statusbar"><span id="graphCount"></span><span id="selectionStatus" aria-live="polite">点击节点，发现关联</span><span class="status-hint">拖动探索 · 滚轮缩放</span></footer>
+</section><aside class="details" aria-label="所选节点详情"><div class="detail-top"><span id="detailHeader">肌群图谱</span><button id="clear" aria-label="关闭详情并恢复全图" title="恢复全图"><svg class="icon" style="width:15px"><use href="#i-close"/></svg></button></div><div class="detail-content" id="detailContent" aria-live="polite"></div><div class="detail-footer">连线表示参与角色，不表示发力比例。</div></aside></main><main id="planView" hidden></main></div></div><div id="plannerDialogs"></div><div id="planNotice" role="status" hidden></div>
+<div class="help-popover" id="helpPanel" hidden><strong>跟着连接探索</strong><br>点击节点：锁定关联<br>拖动节点：调整位置<br>拖动空白：移动星图<br>滚轮 / 双指：缩放<br><kbd>/</kbd> 搜索　<kbd>Esc</kbd> 回到全图<br><button id="closeHelp" style="color:#c7dca9;margin-top:10px">知道了</button></div>
+<div id="actionDialogs"></div><script>
+window.MUSCLE_GRAPH_DATA = {
+  "groups": [
+    {
+      "id": "chest",
+      "label": "胸",
+      "en": "Chest",
+      "color": "#adb7c4"
+    },
+    {
+      "id": "back",
+      "label": "背",
+      "en": "Back",
+      "color": "#adb7c4"
+    },
+    {
+      "id": "shoulders",
+      "label": "肩",
+      "en": "Shoulders",
+      "color": "#adb7c4"
+    },
+    {
+      "id": "legs",
+      "label": "臀腿",
+      "en": "Legs & Glutes",
+      "color": "#adb7c4"
+    },
+    {
+      "id": "arms",
+      "label": "手臂",
+      "en": "Arms",
+      "color": "#adb7c4"
+    }
+  ],
+  "muscles": [
+    {
+      "id": "pectoralis_major",
+      "label": "胸大肌",
+      "group": "chest",
+      "description": "胸前的大块肌肉，参与上臂向身体中线靠拢与推举。"
+    },
+    {
+      "id": "serratus_anterior",
+      "label": "前锯肌",
+      "group": "chest",
+      "description": "位于胸廓外侧，参与肩胛骨前伸、上回旋与稳定。"
+    },
+    {
+      "id": "latissimus_dorsi",
+      "label": "背阔肌",
+      "group": "back",
+      "description": "背部宽大的肌肉，参与将上臂向下、向后拉。"
+    },
+    {
+      "id": "trapezius",
+      "label": "斜方肌",
+      "group": "back",
+      "description": "覆盖上背部；不同区域共同参与肩胛骨移动与稳定。"
+    },
+    {
+      "id": "rhomboids",
+      "label": "菱形肌群",
+      "group": "back",
+      "description": "包含大、小菱形肌，参与肩胛骨向脊柱靠拢。"
+    },
+    {
+      "id": "erector_spinae",
+      "label": "竖脊肌群",
+      "group": "back",
+      "description": "沿脊柱两侧分布，在俯身与负重时协助维持躯干姿态。"
+    },
+    {
+      "id": "deltoid_anterior",
+      "label": "三角肌·前束",
+      "group": "shoulders",
+      "description": "三角肌前侧区域，参与向前抬臂与推举，并非独立肌肉。"
+    },
+    {
+      "id": "deltoid_lateral",
+      "label": "三角肌·中束",
+      "group": "shoulders",
+      "description": "三角肌外侧区域，参与手臂向侧方抬起，并非独立肌肉。"
+    },
+    {
+      "id": "deltoid_posterior",
+      "label": "三角肌·后束",
+      "group": "shoulders",
+      "description": "三角肌后侧区域，参与上臂向后与水平展开，并非独立肌肉。"
+    },
+    {
+      "id": "gluteus_maximus",
+      "label": "臀大肌",
+      "group": "legs",
+      "description": "臀部主要的伸髋肌肉，参与深蹲起身与髋铰链动作。"
+    },
+    {
+      "id": "gluteus_medius",
+      "label": "臀中肌",
+      "group": "legs",
+      "description": "位于臀部外侧，参与髋外展与骨盆的侧向稳定。"
+    },
+    {
+      "id": "quadriceps",
+      "label": "股四头肌群",
+      "group": "legs",
+      "description": "大腿前侧的肌群，主要参与伸膝。"
+    },
+    {
+      "id": "hamstrings",
+      "label": "腘绳肌群",
+      "group": "legs",
+      "description": "大腿后侧的肌群，参与屈膝与伸髋。"
+    },
+    {
+      "id": "adductors",
+      "label": "髋内收肌群",
+      "group": "legs",
+      "description": "大腿内侧的肌群，参与大腿向内靠拢；部分肌肉也参与伸髋。"
+    },
+    {
+      "id": "calves",
+      "label": "小腿后侧肌群",
+      "group": "legs",
+      "description": "此处合并腓肠肌与比目鱼肌，参与踮脚时的踝跖屈。"
+    },
+    {
+      "id": "biceps_brachii",
+      "label": "肱二头肌",
+      "group": "arms",
+      "description": "上臂前侧肌肉，参与屈肘与前臂旋后。"
+    },
+    {
+      "id": "triceps_brachii",
+      "label": "肱三头肌",
+      "group": "arms",
+      "description": "上臂后侧肌肉，主要参与伸肘。"
+    },
+    {
+      "id": "brachialis",
+      "label": "肱肌",
+      "group": "arms",
+      "description": "位于肱二头肌深层，参与不同握法下的屈肘。"
+    }
+  ],
+  "exercises": []
+};
+
+</script><script>
+window.FITPILOT_CATALOGUE = [
+  {
+    "id": "catalog-bench",
+    "label": "杠铃卧推",
+    "equipment": "杠铃",
+    "mode": "barbell",
+    "pattern": "horizontal-push",
+    "primary": [
+      "pectoralis_major"
+    ],
+    "secondary": [
+      "triceps_brachii",
+      "deltoid_anterior"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0025.json"
+      }
+    ],
+    "position": {
+      "x": 370,
+      "y": 270
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-incline",
+    "label": "哑铃上斜卧推",
+    "equipment": "哑铃 · 上斜凳",
+    "mode": "dumbbell",
+    "pattern": "horizontal-push",
+    "primary": [
+      "pectoralis_major"
+    ],
+    "secondary": [
+      "deltoid_anterior",
+      "triceps_brachii"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0314.json"
+      }
+    ],
+    "position": {
+      "x": 370,
+      "y": 355
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-dip",
+    "label": "双杠臂屈伸",
+    "equipment": "双杠",
+    "mode": "bodyweight",
+    "pattern": "horizontal-push",
+    "primary": [
+      "pectoralis_major",
+      "triceps_brachii"
+    ],
+    "secondary": [
+      "deltoid_anterior"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "此处采用胸部与肱三头肌参与的双杠版本；躯干角度会改变侧重。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0251.json"
+      }
+    ],
+    "position": {
+      "x": 430,
+      "y": 450
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-pushdown",
+    "label": "龙门架绳索下压",
+    "equipment": "绳索",
+    "mode": "machine",
+    "pattern": "elbow-extension",
+    "primary": [
+      "triceps_brachii"
+    ],
+    "secondary": [],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0200.json"
+      }
+    ],
+    "position": {
+      "x": 435,
+      "y": 480
+    },
+    "aliases": [
+      "龙门架绳索下拉"
+    ]
+  },
+  {
+    "id": "catalog-triceps",
+    "label": "仰卧哑铃臂屈伸",
+    "equipment": "哑铃 · 平凳",
+    "mode": "dumbbell",
+    "pattern": "elbow-extension",
+    "primary": [
+      "triceps_brachii"
+    ],
+    "secondary": [],
+    "stabilizers": [
+      "deltoid_anterior"
+    ],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0351.json"
+      }
+    ],
+    "position": {
+      "x": 425,
+      "y": 560
+    },
+    "aliases": [
+      "仰卧哑铃臂曲神",
+      "仰卧哑铃臂曲伸"
+    ]
+  },
+  {
+    "id": "catalog-pullup",
+    "label": "引体向上",
+    "equipment": "单杠",
+    "mode": "bodyweight",
+    "pattern": "vertical-pull",
+    "primary": [
+      "latissimus_dorsi"
+    ],
+    "secondary": [
+      "biceps_brachii",
+      "brachialis",
+      "trapezius"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0652.json"
+      }
+    ],
+    "position": {
+      "x": 820,
+      "y": 120
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-pulldown",
+    "label": "对握高位下拉",
+    "equipment": "高位下拉器械",
+    "mode": "machine",
+    "pattern": "vertical-pull",
+    "primary": [
+      "latissimus_dorsi"
+    ],
+    "secondary": [
+      "biceps_brachii",
+      "brachialis",
+      "rhomboids"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/7583.json"
+      }
+    ],
+    "position": {
+      "x": 920,
+      "y": 90
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-trow",
+    "label": "T杆划船",
+    "equipment": "T杆器械",
+    "mode": "machine",
+    "pattern": "horizontal-pull",
+    "primary": [
+      "latissimus_dorsi",
+      "rhomboids",
+      "trapezius"
+    ],
+    "secondary": [
+      "biceps_brachii",
+      "deltoid_posterior"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "此处参考T杆器械版本；有无胸托会影响躯干稳定需求。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0606.json"
+      }
+    ],
+    "position": {
+      "x": 800,
+      "y": 290
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-cable-row",
+    "label": "窄距坐姿划船",
+    "equipment": "绳索 · V形把手",
+    "mode": "machine",
+    "pattern": "horizontal-pull",
+    "primary": [
+      "latissimus_dorsi",
+      "rhomboids"
+    ],
+    "secondary": [
+      "trapezius",
+      "biceps_brachii",
+      "deltoid_posterior"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/2661.json"
+      }
+    ],
+    "position": {
+      "x": 780,
+      "y": 385
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-barbell-row",
+    "label": "杠铃划船",
+    "equipment": "杠铃",
+    "mode": "barbell",
+    "pattern": "horizontal-pull",
+    "primary": [
+      "latissimus_dorsi",
+      "rhomboids",
+      "trapezius"
+    ],
+    "secondary": [
+      "biceps_brachii",
+      "brachialis",
+      "deltoid_posterior"
+    ],
+    "stabilizers": [
+      "erector_spinae"
+    ],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0027.json"
+      }
+    ],
+    "position": {
+      "x": 850,
+      "y": 470
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-preacher",
+    "label": "牧师凳弯举",
+    "equipment": "杠铃 · 牧师凳",
+    "mode": "barbell",
+    "pattern": "elbow-flexion",
+    "primary": [
+      "biceps_brachii"
+    ],
+    "secondary": [
+      "brachialis"
+    ],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0070.json"
+      }
+    ],
+    "position": {
+      "x": 740,
+      "y": 430
+    },
+    "aliases": [
+      "牧师凳弯矩"
+    ]
+  },
+  {
+    "id": "catalog-hammer",
+    "label": "锤式弯举",
+    "equipment": "哑铃",
+    "mode": "dumbbell",
+    "pattern": "elbow-flexion",
+    "primary": [
+      "brachialis",
+      "biceps_brachii"
+    ],
+    "secondary": [],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0313.json"
+      }
+    ],
+    "position": {
+      "x": 800,
+      "y": 520
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-squat",
+    "label": "杠铃深蹲",
+    "equipment": "杠铃 · 深蹲架",
+    "mode": "barbell",
+    "pattern": "squat",
+    "primary": [
+      "quadriceps",
+      "gluteus_maximus"
+    ],
+    "secondary": [
+      "adductors"
+    ],
+    "stabilizers": [
+      "erector_spinae"
+    ],
+    "compound": true,
+    "provenance": "example",
+    "notes": "肌群角色按动作机制整理，不照搬其他动作库的笼统分类。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0043.json"
+      }
+    ],
+    "position": {
+      "x": 350,
+      "y": 620
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-deadlift",
+    "label": "传统杠铃硬拉",
+    "equipment": "杠铃",
+    "mode": "barbell",
+    "pattern": "hinge",
+    "primary": [
+      "gluteus_maximus",
+      "quadriceps",
+      "hamstrings"
+    ],
+    "secondary": [],
+    "stabilizers": [
+      "erector_spinae",
+      "latissimus_dorsi",
+      "trapezius"
+    ],
+    "compound": true,
+    "provenance": "example",
+    "notes": "肌群角色按动作机制整理，不照搬其他动作库的笼统分类。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0032.json"
+      }
+    ],
+    "position": {
+      "x": 825,
+      "y": 545
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-rdl",
+    "label": "罗马尼亚硬拉",
+    "equipment": "杠铃",
+    "mode": "barbell",
+    "pattern": "hinge",
+    "primary": [
+      "hamstrings",
+      "gluteus_maximus"
+    ],
+    "secondary": [],
+    "stabilizers": [
+      "erector_spinae",
+      "latissimus_dorsi"
+    ],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0085.json"
+      }
+    ],
+    "position": {
+      "x": 860,
+      "y": 650
+    },
+    "aliases": [
+      "罗马尼亚深蹲"
+    ]
+  },
+  {
+    "id": "catalog-hack",
+    "label": "哈克深蹲",
+    "equipment": "哈克器械",
+    "mode": "machine",
+    "pattern": "squat",
+    "primary": [
+      "quadriceps",
+      "gluteus_maximus"
+    ],
+    "secondary": [
+      "adductors"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0743.json"
+      }
+    ],
+    "position": {
+      "x": 300,
+      "y": 715
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-leg-extension",
+    "label": "器械腿屈伸",
+    "equipment": "腿屈伸器械",
+    "mode": "machine",
+    "pattern": "knee-extension",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "肌群角色按动作机制整理，不照搬其他动作库的笼统分类。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0585.json"
+      }
+    ],
+    "position": {
+      "x": 730,
+      "y": 760
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-fly",
+    "label": "平板哑铃飞鸟",
+    "equipment": "哑铃 · 平凳",
+    "mode": "dumbbell",
+    "pattern": "chest-fly",
+    "primary": [
+      "pectoralis_major"
+    ],
+    "secondary": [
+      "deltoid_anterior"
+    ],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0308.json"
+      }
+    ],
+    "position": {
+      "x": 350,
+      "y": 145
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-lateral",
+    "label": "哑铃侧平举",
+    "equipment": "哑铃",
+    "mode": "dumbbell",
+    "pattern": "lateral-raise",
+    "primary": [
+      "deltoid_lateral"
+    ],
+    "secondary": [
+      "trapezius"
+    ],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0334.json"
+      }
+    ],
+    "position": {
+      "x": 440,
+      "y": 205
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-y-raise",
+    "label": "Y字侧平举",
+    "equipment": "绳索",
+    "mode": "machine",
+    "pattern": "y-raise",
+    "primary": [
+      "deltoid_anterior",
+      "deltoid_lateral"
+    ],
+    "secondary": [
+      "trapezius"
+    ],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "此处采用站姿绳索Y字抬举；手臂向上、向外展开。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/8899.json"
+      },
+      {
+        "label": "MuscleWiki 动作说明",
+        "url": "https://musclewiki.com/zh-cn/exercise/cable-y-raise"
+      }
+    ],
+    "position": {
+      "x": 710,
+      "y": 205
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-cable-lateral",
+    "label": "绳索侧平举",
+    "equipment": "绳索",
+    "mode": "machine",
+    "pattern": "lateral-raise",
+    "primary": [
+      "deltoid_lateral"
+    ],
+    "secondary": [
+      "trapezius"
+    ],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0178.json"
+      }
+    ],
+    "position": {
+      "x": 760,
+      "y": 250
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-reverse-fly",
+    "label": "蝴蝶机反向飞鸟",
+    "equipment": "蝴蝶机",
+    "mode": "machine",
+    "pattern": "reverse-fly",
+    "primary": [
+      "deltoid_posterior"
+    ],
+    "secondary": [
+      "rhomboids",
+      "trapezius"
+    ],
+    "stabilizers": [],
+    "compound": false,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0602.json"
+      }
+    ],
+    "position": {
+      "x": 820,
+      "y": 410
+    },
+    "aliases": []
+  },
+  {
+    "id": "catalog-seated-press",
+    "label": "坐姿哑铃推肩",
+    "equipment": "哑铃 · 靠背凳",
+    "mode": "dumbbell",
+    "pattern": "vertical-push",
+    "primary": [
+      "deltoid_anterior"
+    ],
+    "secondary": [
+      "deltoid_lateral",
+      "triceps_brachii"
+    ],
+    "stabilizers": [],
+    "compound": true,
+    "provenance": "example",
+    "notes": "",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/0405.json"
+      }
+    ],
+    "position": {
+      "x": 585,
+      "y": 270
+    },
+    "aliases": [
+      "坐姿推荐",
+      "坐姿推肩"
+    ]
+  },
+  {
+    "id": "catalog-strict-press",
+    "label": "实力推",
+    "equipment": "杠铃",
+    "mode": "barbell",
+    "pattern": "vertical-push",
+    "primary": [
+      "deltoid_anterior"
+    ],
+    "secondary": [
+      "deltoid_lateral",
+      "triceps_brachii"
+    ],
+    "stabilizers": [
+      "erector_spinae"
+    ],
+    "compound": true,
+    "provenance": "example",
+    "notes": "此处为站姿杠铃严格推举，不借助屈膝蹬腿。",
+    "sources": [
+      {
+        "label": "openGym 动作参考",
+        "url": "https://github.com/DuarteSantos8/openGym/blob/main/catalogue/exercises/1162.json"
+      }
+    ],
+    "position": {
+      "x": 585,
+      "y": 330
+    },
+    "aliases": []
+  }
+];
+window.MUSCLE_GRAPH_EXAMPLES = [];
+
+</script>
+<script>
+(()=>{'use strict';
+const D=window.MUSCLE_GRAPH_DATA,$=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+if(!D){$('detailContent').textContent='数据未载入，请使用完整的预览文件。';return}
+const groups=new Map(D.groups.map(g=>[g.id,g]));
+const hubs={chest:[220,255],back:[960,255],shoulders:[585,150],arms:[585,400],legs:[585,675]};
+const satelliteSlots={chest:[[-90,-100],[-120,75]],back:[[20,-115],[125,-25],[125,100],[-55,100]],shoulders:[[-145,-60],[0,-100],[145,-60]],arms:[[-120,-20],[0,105],[125,-15]],legs:[[-165,-30],[-110,95],[0,105],[120,85],[160,-35],[-80,-125]]};
+
+const nodes=[],byId=new Map(),used=new Map();
+function add(n){nodes.push(n);byId.set(n.id,n);n.initial=[n.x,n.y]}
+for(const g of D.groups)add({...g,type:'group',x:hubs[g.id][0],y:hubs[g.id][1],r:6.5});
+for(const m of D.muscles){const index=used.get(m.group)||0;used.set(m.group,index+1);const slot=satelliteSlots[m.group][index%satelliteSlots[m.group].length];add({...m,type:'muscle',x:hubs[m.group][0]+slot[0],y:hubs[m.group][1]+slot[1],color:groups.get(m.group).color,r:5})}
+
+const edges=[];for(const m of D.muscles)edges.push({a:m.group,b:m.id,role:'membership'});
+// Stable orbit composition: local repulsion separates labels without perpetual movement.
+for(let step=0;step<70;step++)for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j],dx=b.x-a.x,dy=b.y-a.y;let distance=Math.hypot(dx,dy)||1;const min=(a.type==='group'||b.type==='group')?96:63;if(distance<min){const f=(min-distance)*.12;for(const [n,sign] of [[a,-1],[b,1]])if(n.type!=='group'){n.x=Math.max(65,Math.min(1105,n.x+dx/distance*f*sign));n.y=Math.max(36,Math.min(789,n.y+dy/distance*f*sign))}}}
+for(const n of nodes)n.initial=[n.x,n.y];
+let selected=null,hovered=null,showAux=true,view={x:0,y:0,k:1},drag=null,animation=0,pointers=new Map(),pinch=null;
+const svg=$('graph'),scene=$('scene');const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function element(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);parent.appendChild(e);return e}
+for(const e of edges)e.el=element('path',{class:'graph-edge '+e.role,'data-from':e.a,'data-to':e.b},$('edges'));
+function mountNode(n){const el=element('g',{class:'node '+n.type,'data-id':n.id,role:'button',tabindex:'0','aria-label':n.label+'，'+({group:'肌群中心',muscle:'肌群',exercise:'训练动作'}[n.type]),'aria-pressed':'false',style:'--node-color:'+n.color},$('nodes'));n.el=el;
+
+ element('circle',{r:n.r+9,class:'selection-ring'},el);element('circle',{r:n.type==='group'?26:20,class:'hit'},el);
+ const core=n.type==='exercise'?element('rect',{x:-5,y:-5,width:10,height:10,rx:2,transform:'rotate(45)',class:'node-core'},el):element('circle',{r:n.r,class:'node-core'},el);
+ if(n.type==='group'){core.setAttribute('fill-opacity','1')}
+ element('text',{x:0,y:n.type==='group'?38:26,class:'node-label'},el).textContent=n.type==='exercise'&&[...n.label].length>12?[...n.label].slice(0,12).join('')+'…':n.label;
+
+ el.addEventListener('mouseenter',()=>{if(!drag){hovered=n.id;paint()}});el.addEventListener('mouseleave',()=>{hovered=null;paint()});
+ el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(n.id)}});}
+for(const n of nodes)mountNode(n);
+for(const g of D.groups){const b=document.createElement('button');b.className='chip';b.dataset.filter=g.id;b.setAttribute('aria-pressed','false');b.innerHTML='<i class="dot" style="--c:'+g.color+'"></i>'+g.label;$('filters').appendChild(b)}
+function neighborhood(id){
+ const lit=new Set(),lineSet=new Set(),n=byId.get(id);if(!n)return {lit,lineSet};lit.add(id);
+ if(n.type==='exercise'){for(const m of roles(n))lit.add(m)}
+ else if(n.type==='group'){for(const m of D.muscles)if(m.group===id)lit.add(m.id)}else lit.add(n.group);
+ if(n.type!=='exercise')for(const a of visibleActions())if(roles(a).some(m=>lit.has(m)))lit.add(a.id);
+ for(const m of [...lit]){const point=byId.get(m);if(point?.type==='muscle')lit.add(point.group)}
+ for(const e of edges)if(lit.has(e.a)&&lit.has(e.b)&&nodeVisible(byId.get(e.a)))lineSet.add(e);
+ return {lit,lineSet};
+}
+function position(){const changed=new Set();for(const n of nodes)if(n._drawX!==n.x||n._drawY!==n.y){n.el.setAttribute('transform',`translate(${n.x} ${n.y})`);n._drawX=n.x;n._drawY=n.y;changed.add(n.id)}for(const e of edges)if(!e._drawn||changed.has(e.a)||changed.has(e.b)){const a=byId.get(e.a),b=byId.get(e.b);e.el.setAttribute('d',`M ${a.x} ${a.y} L ${b.x} ${b.y}`);e._drawn=true}}
+let paintKey='';
+function paint(){const focus=(drag?.moved&&drag.id)||selected||hovered,key=[focus,selected,showActions,showExamples,!!drag?.moved].join('|');if(paintKey===key)return;paintKey=key;const {lit,lineSet}=neighborhood(focus);for(const n of nodes){n.el.style.display=nodeVisible(n)?'':'none';n.el.classList.toggle('dim',!!focus&&!lit.has(n.id));n.el.classList.toggle('connected',lit.has(n.id));n.el.classList.toggle('focus',n.id===focus);n.el.setAttribute('aria-pressed',String(n.id===selected))}
+ for(const e of edges){e.el.classList.toggle('dim',!!focus&&!lineSet.has(e));e.el.classList.toggle('lit',lineSet.has(e));e.el.style.display=!nodeVisible(byId.get(e.a))||(byId.get(focus)?.type==='exercise'&&e.role!=='membership'&&e.a!==focus)?'none':'';e.el.style.setProperty('--edge-color',byId.get(e.b).color)}
+ for(const b of $('filters').querySelectorAll('[data-filter]')){const active=(!selected&&b.dataset.filter==='all')||(selected===b.dataset.filter);b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))}
+ $('selectionStatus').textContent=selected?byId.get(selected).label+' · '+(neighborhood(selected).lit.size-1)+' 个关联节点':'点击节点，发现关联';if(drag?.moved&&drag.id)$('selectionStatus').textContent='正在拖动 '+byId.get(drag.id).label;}
+const icon=name=>'<svg class="icon" style="width:16px;height:16px"><use href="#i-'+name+'"/></svg>';
+function tag(m){const n=byId.get(m);return '<button class="tag" data-select="'+n.id+'"><i class="dot" style="--c:'+n.color+'"></i>'+esc(n.label)+'</button>'}
+function actionRow(e){return '<button class="action-row" data-select="'+e.id+'"><i class="dot" style="--c:'+groups.get(byId.get(e.primary[0]).group).color+'"></i><span>'+esc(e.label)+'<small>'+esc(e.equipment)+'</small></span><span class="arrow">↗</span></button>'}
+function bodyDiagram(active){const set=new Set(active),backView=set.has('back')&&!set.has('chest');const part=(group,path)=>'<path class="body-part '+(set.has(group)?'active':'')+'" style="--body-color:'+groups.get(group).color+'" data-select="'+group+'" d="'+path+'"/>';return '<div class="body-frame"><svg viewBox="0 0 180 260" role="img" aria-label="参与肌群的位置示意，不表示发力比例"><ellipse cx="90" cy="22" rx="13" ry="17" class="body-structure"/><path d="M82 38v11L66 55 52 65 41 91 34 120 23 150l7 5 16-28 13-28-1 39 6 25-4 29 4 35 2 20 12 1 4-27 7-31h3l7 31 4 27 12-1 2-20 4-35-4-29 6-25-1-39 13 28 16 28 7-5-11-30-7-29-11-26-14-10-16-6V38" class="body-structure"/>'+part('shoulders','M64 57q-17 6-18 29l13 4 12-18Z M116 57q17 6 18 29l-13 4-12-18Z')+(backView?part('back','M73 52 88 57v33L67 82Z M107 52 92 57v33l21-8Z M63 87l24 7v38l-16-6Z M117 87l-24 7v38l16-6Z'):part('chest','M72 57 88 61v25q-16 6-26-2l6-20Z M108 57 92 61v25q16 6 26-2l-6-20Z'))+part('arms','M45 88 56 94l-8 30-14 22-7-2 13-26Z M135 88l-11 6 8 30 14 22 7-2-13-26Z')+part('legs','M64 153q10 5 21 4l-3 35-7 23-10-1-3-29Z M116 153q-10 5-21 4l3 35 7 23 10-1 3-29Z M66 219l10 1-3 22-6 1Z M114 219l-10 1 3 22 6 1Z')+(backView?'<path d="M90 51v94m-13-52-8 13m34-13 8 13" class="body-structure"/>':'<path d="M83 94h14m-15 10h16m-16 12h16m-14 12h12M90 91v48m-15 1 15 11 15-11" class="body-structure"/>')+'</svg><div class="body-caption">'+(backView?'后侧肌群位置示意 · 非解剖图':'前侧肌群位置示意 · 不表示参与比例')+'</div></div>';}
+function showDetail(){
+ if(selected&&byId.get(selected)?.type==='exercise'){showActionDetail(byId.get(selected));return}
+ const panel=$('detailContent');panel.scrollTop=0;
+ if(!selected){$('detailHeader').textContent='肌群图谱';panel.innerHTML='<h2>选一个肌群</h2><p class="detail-description">查看相关动作，安排自己的训练。</p><button class="try-button" id="openLibraryFromGraph">打开动作库 ↗</button>';return}
+ const n=byId.get(selected),group=n.type==='group'?n.id:n.group,items=D.muscles.filter(m=>m.group===group);
+ $('detailHeader').textContent=n.type==='group'?'肌群区域':'肌群详情';
+ let html='<div class="detail-kicker"><i class="dot" style="--c:'+n.color+'"></i>'+groups.get(group).label+'</div><h2>'+esc(n.label)+'</h2><p class="detail-description">'+esc(n.description||'选择一个肌群，探索相关动作。')+'</p>';
+ if(n.type==='group')html+='<div class="tags">'+items.map(m=>tag(m.id)).join('')+'</div>';
+ const related=[...(window.FITPILOT_CATALOGUE||[]),...userActions].filter(a=>roles(a).some(id=>n.type==='group'?byId.get(id).group===group:id===n.id));
+ html+='<div class="detail-section"><div class="section-label">相关动作</div>'+(related.length?related.map(actionRow).join(''):'<p class="empty-text">还没有相关动作，可以自己添加。</p>')+'</div>';
+ panel.innerHTML=html;
+}
+function choose(id){if(id&&!byId.has(id)){const a=(window.FITPILOT_CATALOGUE||[]).find(a=>a.id===id);if(a){EXAMPLES=[a];showExamples=true;rebuildActions()}}if(id&&EXAMPLES.some(a=>a.id===id)&&!showExamples)setExamples(true);if(id&&!byId.has(id))return;const restoreFocus=$('detailContent').contains(document.activeElement)||document.activeElement===$('search');if(id&&byId.get(id).type==='exercise'&&byId.get(id).provenance!=='example'&&!showActions&&!setLayer(true))return;selected=id;hovered=null;hideSearch();paint();showDetail();if(restoreFocus&&id){const title=$('detailContent').querySelector('h2');if(title){title.tabIndex=-1;title.focus({preventScroll:true})}}if(innerWidth<=820){if(id)fitSelection();else animateView({x:0,y:0,k:1})}$('sceneLabel').textContent=id?''+byId.get(id).label:'全身肌群';}
+document.addEventListener('click',e=>{const node=e.target.closest('[data-select]');if(node)choose(node.dataset.select);const filter=e.target.closest('[data-filter]');if(filter)choose(filter.dataset.filter==='all'?null:filter.dataset.filter)});
+
+$('clear').onclick=()=>choose(null);$('overviewRail').onclick=()=>choose(null);$('sourcesRail').onclick=()=>{$('detailHeader').textContent='图谱说明';$('detailContent').innerHTML='<h2>先认识肌群</h2><p class="detail-description">五个中心是浏览分类；细节点包括肌肉、肌肉分部与功能肌群。连线只表示所属区域，不表示参与比例或肌肉之间存在直接作用关系。</p><p class="detail-description">人体小图为位置示意，不是完整解剖图。</p><button class="try-button" data-select="chest">探索胸部肌群 ↗</button>'};
+function hideSearch(){$('searchResults').hidden=true;$('search').setAttribute('aria-expanded','false')}
+function search(){const q=$('search').value.trim().toLowerCase();if(!q){$('searchResults').replaceChildren();hideSearch();return}const searchNodes=[...nodes,...(window.FITPILOT_CATALOGUE||[]).filter(a=>!byId.has(a.id)).map(a=>({...a,type:'exercise',color:groups.get(byId.get(a.primary[0]).group).color}))];const matches=searchNodes.filter(n=>(n.label+' '+(n.en||'')).toLowerCase().includes(q)).slice(0,7);$('searchResults').innerHTML=matches.length?matches.map(n=>'<button data-select="'+n.id+'"><i class="dot" style="--c:'+n.color+'"></i>'+esc(n.label)+'<small>'+({group:'中心',muscle:'肌群',exercise:'动作'}[n.type])+'</small></button>').join(''):'<p>没有找到，试试“胸”或“肱二头肌”。</p>';$('searchResults').hidden=false;$('search').setAttribute('aria-expanded','true')}
+$('search').addEventListener('input',search);$('search').addEventListener('focus',()=>{if($('search').value)search()});$('search').addEventListener('keydown',e=>{if(e.key==='Enter'&&!$('searchResults').hidden&&$('search').value.trim()){const first=$('searchResults').querySelector('button');if(first){choose(first.dataset.select);$('search').blur();fitSelection()}}if(e.key==='ArrowDown'&&!$('searchResults').hidden){e.preventDefault();$('searchResults').querySelector('button')?.focus()}});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))hideSearch()});document.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]'))return;if(e.key==='Escape'){choose(null);hideSearch();$('helpPanel').hidden=true;$('help').setAttribute('aria-expanded','false')}if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();$('search').focus()}});
+function updateView(){scene.setAttribute('transform',`translate(${view.x} ${view.y}) scale(${view.k})`);$('zoomPercent').textContent=Math.round(view.k*100)+'%'}
+function point(e){return new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM().inverse())}
+function world(p){return {x:(p.x-view.x)/view.k,y:(p.y-view.y)/view.k}}
+function changeZoom(k,anchor={x:590,y:420}){cancelAnimationFrame(animation);const old=world(anchor);view.k=Math.max(.5,Math.min(3.2,k));view.x=anchor.x-old.x*view.k;view.y=anchor.y-old.y*view.k;updateView()}
+function animateView(target){cancelAnimationFrame(animation);if(matchMedia('(prefers-reduced-motion: reduce)').matches){view=target;updateView();return}const start={...view},time=performance.now();function tick(now){const t=Math.min(1,(now-time)/300),s=1-Math.pow(1-t,3);for(const key of ['x','y','k'])view[key]=start[key]+(target[key]-start[key])*s;updateView();if(t<1)animation=requestAnimationFrame(tick)}animation=requestAnimationFrame(tick)}
+function fitSelection(){if(selected&&innerWidth<=820&&byId.get(selected).type!=='exercise'){const n=byId.get(selected);animateView({x:590-n.x*2.2,y:420-n.y*2.2,k:2.2});return}if(!selected){animateView({x:0,y:0,k:1});return}const active=[...neighborhood(selected).lit].map(id=>byId.get(id)),xs=active.map(n=>n.x),ys=active.map(n=>n.y);const x=(Math.min(...xs)+Math.max(...xs))/2,y=(Math.min(...ys)+Math.max(...ys))/2,k=Math.max(.8,Math.min(2.4,1020/(Math.max(...xs)-Math.min(...xs)+160),680/(Math.max(...ys)-Math.min(...ys)+140)));animateView({x:590-x*k,y:420-y*k,k})}
+$('zoomIn').onclick=()=>changeZoom(view.k*1.2);$('zoomOut').onclick=()=>changeZoom(view.k/1.2);$('fit').onclick=fitSelection;$('reset').onclick=()=>{stopPhysics();for(const n of nodes){[n.x,n.y]=n.initial;n.ax=n.x;n.ay=n.y;n.vx=n.vy=0;}resetSprings();position();choose(null);animateView({x:0,y:0,k:1})};
+svg.addEventListener('wheel',e=>{e.preventDefault();changeZoom(view.k*Math.exp(-e.deltaY*.0012),point(e))},{passive:false});
+svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;cancelAnimationFrame(animation);const p=point(e);pointers.set(e.pointerId,p);svg.setPointerCapture(e.pointerId);if(pointers.size===2){if(physicalDrag)endPhysicalDrag(byId.get(physicalDrag.id));physicalDrag=null;for(const n of nodes)n.el.classList.remove('dragging');const[a,b]=[...pointers.values()];pinch={distance:Math.hypot(a.x-b.x,a.y-b.y),view:{...view},center:{x:(a.x+b.x)/2,y:(a.y+b.y)/2}};drag=null;return}const n=e.target.closest('.node'),id=n?.dataset.id;drag={id:id||null,start:p,screenStart:{x:e.clientX,y:e.clientY},view:{...view},node:id?{x:byId.get(id).x,y:byId.get(id).y}:null,moved:false};if(id)beginPhysicalDrag(id)});
+svg.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;const p=point(e);pointers.set(e.pointerId,p);if(pinch&&pointers.size===2){const[a,b]=[...pointers.values()],mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2},k=Math.max(.5,Math.min(3.2,pinch.view.k*Math.hypot(a.x-b.x,a.y-b.y)/Math.max(1,pinch.distance)));view={k,x:mid.x-(pinch.center.x-pinch.view.x)/pinch.view.k*k,y:mid.y-(pinch.center.y-pinch.view.y)/pinch.view.k*k};updateView();return}if(!drag)return;const dx=p.x-drag.start.x,dy=p.y-drag.start.y;if(Math.hypot(e.clientX-drag.screenStart.x,e.clientY-drag.screenStart.y)>4)drag.moved=true;if(!drag.moved)return;hovered=null;if(drag.id){const n=byId.get(drag.id);n.x=Math.max(35,Math.min(1140,drag.node.x+dx/view.k));n.y=Math.max(30,Math.min(n.type==='group'?770:800,drag.node.y+dy/view.k));movePhysicalDrag(n);position()}else{view.x=drag.view.x+dx;view.y=drag.view.y+dy;updateView()}paint()});
+function finish(e,cancelled=false){pointers.delete(e.pointerId);if(pinch){if(pointers.size<2)pinch=null;drag=null;return}if(drag?.moved&&drag.id)endPhysicalDrag(byId.get(drag.id));else physicalDrag=null;if(drag&&!drag.moved&&!cancelled)choose(drag.id&&selected!==drag.id?drag.id:null);drag=null;hovered=null;paint()}
+svg.addEventListener('pointerup',e=>finish(e));svg.addEventListener('pointercancel',e=>finish(e,true));svg.addEventListener('lostpointercapture',e=>{if(pointers.has(e.pointerId))finish(e,true)});
+$('help').onclick=()=>{const visible=$('helpPanel').hidden;$('helpPanel').hidden=!visible;$('help').setAttribute('aria-expanded',String(visible))};$('closeHelp').onclick=()=>{$('helpPanel').hidden=true;$('help').setAttribute('aria-expanded','false');$('help').focus()};
+// Inserted into the atlas closure. No external runtime or network dependency.
+const STORE='fitpilot.personal-actions.v1',motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
+let EXAMPLES=window.MUSCLE_GRAPH_EXAMPLES||[];
+let showExamples=false;
+let userActions=[],showActions=false,storageBlocked=false,pendingDelete=null,pendingImport=null;
+const roles=a=>[...a.primary,...a.secondary,...(a.stabilizers||[])];
+const visibleActions=()=>[...(showExamples?EXAMPLES:[]),...(showActions?userActions:[])];
+const nodeVisible=n=>n.type!=='exercise'||(n.provenance==='example'?showExamples:showActions);
+
+// Only nodes contacted by the pointer path (or a touching local neighbour) can move.
+let physicsRAF=0,physicsLast=0,physicsStarted=0,physicalDrag=null;
+const avoiders=new Map();
+const parked=new Map();
+const labelBounds=new Map();
+for(const n of nodes){n.ax=n.x;n.ay=n.y;n.vx=n.vy=0}
+
+let geometryScale=1,cellSize=90,visiblePoints=[],spatialReady=false;
+const cells=new Map(),entries=new Map();
+let pendingMoves=[];
+function screenScale(){return geometryScale}
+function pointBox(n,p=n,pad=0){const b=labelBounds.get(n.id),r=n.r+pad;return {left:Math.min(p.x-r,b?p.x+b.x-pad:p.x-r),right:Math.max(p.x+r,b?p.x+b.x+b.width+pad:p.x+r),top:Math.min(p.y-r,b?p.y+b.y-pad:p.y-r),bottom:Math.max(p.y+r,b?p.y+b.y+b.height+pad:p.y+r)}}
+function keysFor(b){const keys=[];for(let x=Math.floor(b.left/cellSize);x<=Math.floor(b.right/cellSize);x++)for(let y=Math.floor(b.top/cellSize);y<=Math.floor(b.bottom/cellSize);y++)keys.push(x+':'+y);return keys}
+function indexPoint(n){const old=entries.get(n.id);if(old&&old.x===n.x&&old.y===n.y)return;if(old)for(const key of old.keys){const set=cells.get(key);set?.delete(n);if(set&&!set.size)cells.delete(key)}const keys=keysFor(pointBox(n,n,8/geometryScale));for(const key of keys){if(!cells.has(key))cells.set(key,new Set());cells.get(key).add(n)}entries.set(n.id,{x:n.x,y:n.y,keys})}
+function prepareGeometry(rebuild=false){const m=svg.getScreenCTM(),scale=Math.max(.05,Math.hypot(m.a,m.b)*view.k);if(rebuild||!spatialReady||Math.abs(scale-geometryScale)>.0001){geometryScale=scale;cellSize=90/scale;visiblePoints=nodes.filter(nodeVisible);cells.clear();entries.clear();spatialReady=true}for(const n of visiblePoints)indexPoint(n)}
+function queryBox(b){const found=new Set();for(const key of keysFor(b))for(const n of cells.get(key)||[])found.add(n);return found}
+function nearby(n,p=n){return queryBox(pointBox(n,p,8/geometryScale))}
+function pathNeighbours(n,a,b){const pad=n.r+24/geometryScale;return queryBox({left:Math.min(a.x,b.x)-pad,right:Math.max(a.x,b.x)+pad,top:Math.min(a.y,b.y)-pad,bottom:Math.max(a.y,b.y)+pad})}
+function flushPending(now){if(!pendingMoves.length)return;prepareGeometry();const moves=pendingMoves;pendingMoves=[];for(const move of moves)contactPath(move.n,move.before,move.after,now);projectCollisions()}
+
+function clearance(a,b,soft=false){return a.r+b.r+(soft?20:5)/screenScale()}
+function limits(n){return {left:35,right:1140,top:30,bottom:n.type==='group'?770:800}}
+function clampPoint(p,n){const b=limits(n);return {x:Math.max(b.left,Math.min(b.right,p.x)),y:Math.max(b.top,Math.min(b.bottom,p.y))}}
+function closest(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,d=dx*dx+dy*dy,t=d?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/d)):0;return {x:a.x+t*dx,y:a.y+t*dy}}
+function deterministicNormal(n){let sum=0;for(const c of n.id)sum=(sum*31+c.charCodeAt(0))>>>0;const angle=sum%360*Math.PI/180;return {x:Math.cos(angle),y:Math.sin(angle)}}
+function activate(n,normal,depth=0){let a=avoiders.get(n.id);if(!a){a={n,normal,depth,pulse:null,until:0};avoiders.set(n.id,a)}return a}
+function resetSprings(){avoiders.clear();parked.clear();spatialReady=false;pendingMoves=[]}
+function stopPhysics(){cancelAnimationFrame(physicsRAF);physicsRAF=0;avoiders.clear();parked.clear();spatialReady=false;pendingMoves=[];for(const n of nodes)n.vx=n.vy=0}
+function rememberLocal(){for(const a of avoiders.values()){if(Math.hypot(a.n.x-a.n.ax,a.n.y-a.n.ay)>.3)parked.set(a.n.id,{n:a.n,normal:a.normal});else parked.delete(a.n.id)}}
+function cost(p,n,preferred){
+ let score=((p.x-preferred.x)**2+(p.y-preferred.y)**2)*8+((p.x-n.ax)**2+(p.y-n.ay)**2)*.5;
+ const a=labelBounds.get(n.id);
+ for(const other of nearby(n,p)){if(other===n)continue;const gap=clearance(n,other),d=Math.hypot(p.x-other.x,p.y-other.y);if(d<gap)score+=(gap-d)**2*500;
+  const b=labelBounds.get(other.id);
+  if(b){const cx=Math.max(other.x+b.x,Math.min(other.x+b.x+b.width,p.x)),cy=Math.max(other.y+b.y,Math.min(other.y+b.y+b.height,p.y));score+=Math.max(0,n.r+3/screenScale()-Math.hypot(p.x-cx,p.y-cy))**2*350}
+  if(a){const cx=Math.max(p.x+a.x,Math.min(p.x+a.x+a.width,other.x)),cy=Math.max(p.y+a.y,Math.min(p.y+a.y+a.height,other.y));score+=Math.max(0,other.r+3/screenScale()-Math.hypot(other.x-cx,other.y-cy))**2*350}
+  if(a&&b){const width=Math.max(0,Math.min(p.x+a.x+a.width,other.x+b.x+b.width)-Math.max(p.x+a.x,other.x+b.x)),height=Math.max(0,Math.min(p.y+a.y+a.height,other.y+b.y+b.height)-Math.max(p.y+a.y,other.y+b.y));score+=width*height*12}
+ }
+ return score;
+}
+function normalFor(n,q,dir,dragged){
+ const existing=avoiders.get(n.id);if(existing)return existing.normal;
+ const normal={x:-dir.y,y:dir.x},r=clearance(n,dragged,true);
+ const plus=clampPoint({x:q.x+normal.x*r,y:q.y+normal.y*r},n),minus=clampPoint({x:q.x-normal.x*r,y:q.y-normal.y*r},n);
+ const relative=(n.x-q.x)*normal.x+(n.y-q.y)*normal.y;
+ const plusCost=cost(plus,n,{x:n.x,y:n.y})+Math.max(0,-relative)*r;
+ const minusCost=cost(minus,n,{x:n.x,y:n.y})+Math.max(0,relative)*r;
+ return plusCost<=minusCost?normal:{x:-normal.x,y:-normal.y};
+}
+function desired(a,now){
+ const n=a.n,home={x:n.ax,y:n.ay};let preferred=home;
+ if(a.pulse&&now<a.until)preferred=a.pulse;
+ const dragged=physicalDrag&&byId.get(physicalDrag.id);
+ if(dragged){
+  const normal=a.normal,along={x:normal.y,y:-normal.x},dx=home.x-dragged.x,dy=home.y-dragged.y,r=clearance(n,dragged,true);
+  const parallel=dx*along.x+dy*along.y,side=dx*normal.x+dy*normal.y;
+  if(Math.abs(parallel)<r&&Math.hypot(dx,dy)<r*1.5){
+   const shift=Math.max(0,Math.sqrt(Math.max(0,r*r-parallel*parallel))-side);
+   preferred={x:home.x+normal.x*shift,y:home.y+normal.y*shift};
+  }
+ }
+ if(a.cached&&a.cachedScale===geometryScale&&now-a.cachedAt<40&&Math.hypot(preferred.x-a.cachedPreferred.x,preferred.y-a.cachedPreferred.y)<.25)return a.cached;
+ const direct=clampPoint(preferred,n),directCost=cost(direct,n,preferred);
+ if(directCost<.001){a.cached=direct;a.cachedAt=now;a.cachedPreferred={...preferred};a.cachedScale=geometryScale;return direct}
+ // A few local candidate slots handle a stationary dropped obstacle and canvas boundaries.
+ const candidates=[clampPoint(preferred,n),clampPoint(home,n)];
+ const radius=(n.r+7)+23/screenScale();
+ for(const factor of [1,1.7,2.5])for(let i=0;i<12;i++){
+  const angle=Math.atan2(a.normal.y,a.normal.x)+i*Math.PI/6;
+  candidates.push(clampPoint({x:home.x+Math.cos(angle)*radius*factor,y:home.y+Math.sin(angle)*radius*factor},n));
+ }
+ let best=candidates[0],score=cost(best,n,preferred);
+ for(const p of candidates.slice(1)){const s=cost(p,n,preferred);if(s<score){best=p;score=s}}
+ a.cached=best;a.cachedAt=now;a.cachedPreferred={...preferred};a.cachedScale=geometryScale;return best;
+}
+function projectCollisions(allowChain=true){
+ const dragged=physicalDrag&&byId.get(physicalDrag.id),scale=screenScale();
+ for(let pass=0;pass<5;pass++){
+  for(const a of [...avoiders.values()]){
+   const n=a.n;if(!nodeVisible(n)||n===dragged)continue;
+   for(const other of nearby(n)){if(other===n)continue;
+    let dx=n.x-other.x,dy=n.y-other.y,d=Math.hypot(dx,dy),r=clearance(n,other);
+    if(d>=r-.001)continue;
+    if(d<.001){dx=a.normal.x;dy=a.normal.y;d=1}
+    if(allowChain&&dragged&&other!==dragged&&!avoiders.has(other.id)&&a.depth<2&&Math.hypot(other.x-dragged.x,other.y-dragged.y)*scale<135){
+     activate(other,{x:-dx/d,y:-dy/d},a.depth+1);
+    }
+    const both=other!==dragged&&avoiders.has(other.id);
+    if(both&&n.id>other.id)continue;
+    const shift=r-d+.05,factor=both ? .5 : 1;
+    let p=clampPoint({x:n.x+dx/d*shift*factor,y:n.y+dy/d*shift*factor},n);
+    if(!both&&Math.hypot(p.x-other.x,p.y-other.y)<r-.01){
+     const candidates=[];for(let i=0;i<24;i++){const angle=Math.atan2(a.normal.y,a.normal.x)+i*Math.PI/12,q=clampPoint({x:other.x+Math.cos(angle)*(r+.15),y:other.y+Math.sin(angle)*(r+.15)},n);if(Math.hypot(q.x-other.x,q.y-other.y)>=r-.01)candidates.push(q)}
+     let bestScore=Infinity;for(const q of candidates){const score=cost(q,n,p);if(score<bestScore){bestScore=score;p=q}}
+    }
+    n.x=p.x;n.y=p.y;n.vx=n.vy=0;indexPoint(n);
+    if(both){const q=clampPoint({x:other.x-dx/d*shift*.5,y:other.y-dy/d*shift*.5},other);other.x=q.x;other.y=q.y;other.vx=other.vy=0;indexPoint(other)}
+   }
+  }
+ }
+ // The dragged dot is pinned to the pointer; projection never modifies it.
+}
+function stepAvoidance(now,dt=0,immediate=false){
+ prepareGeometry();let error=0,speed=0;
+ for(const a of [...avoiders.values()]){
+  const n=a.n;if(!byId.has(n.id)||!nodeVisible(n)||physicalDrag?.id===n.id){avoiders.delete(n.id);continue}
+  const before={x:n.x,y:n.y},target=desired(a,now),dx=target.x-n.x,dy=target.y-n.y;
+  if(immediate){n.x=target.x;n.y=target.y;n.vx=n.vy=0}
+  else{
+   const omega=24;for(let k=0;k<3;k++){const t=dt/3;n.vx+=((target.x-n.x)*omega*omega-2*omega*n.vx)*t;n.vy+=((target.y-n.y)*omega*omega-2*omega*n.vy)*t;n.x+=n.vx*t;n.y+=n.vy*t}
+   const p=clampPoint(n,n);n.x=p.x;n.y=p.y;
+  }
+  indexPoint(n);if(a.follow&&physicalDrag)contactPath(n,before,n,now);
+  error=Math.max(error,Math.hypot(dx,dy));speed=Math.max(speed,Math.hypot(n.vx,n.vy));
+ }
+ projectCollisions();position();return {error,speed,pending:[...avoiders.values()].some(a=>a.until>now)};
+}
+function wakePhysics(){
+ if(!avoiders.size&&!pendingMoves.length)return;
+ if(motionQuery.matches){flushPending(performance.now());stepAvoidance(performance.now(),0,true);if(!physicalDrag){rememberLocal();avoiders.clear()}return}
+ physicsStarted=performance.now();if(!physicsRAF){physicsLast=physicsStarted;physicsRAF=requestAnimationFrame(physicsTick)}
+}
+function physicsTick(now){
+ const dt=Math.min(.025,Math.max(.001,(now-physicsLast)/1000));physicsLast=now;flushPending(now);const result=stepAvoidance(now,dt);
+ if(result.pending||((result.error>.25||result.speed>.6)&&now-physicsStarted<2300))physicsRAF=requestAnimationFrame(physicsTick);
+ else{physicsRAF=0;for(const a of avoiders.values())a.n.vx=a.n.vy=0;if(!physicalDrag){rememberLocal();avoiders.clear()}}
+}
+function beginPhysicalDrag(id){
+ cancelAnimationFrame(physicsRAF);physicsRAF=0;rememberLocal();for(const a of avoiders.values())a.n.vx=a.n.vy=0;avoiders.clear();pendingMoves=[];labelBounds.clear();
+ for(const point of nodes){if(!nodeVisible(point))continue;const b=point.el.querySelector('.node-label').getBBox();labelBounds.set(point.id,{x:b.x,y:b.y,width:b.width,height:b.height})}
+ const n=byId.get(id);parked.delete(id);prepareGeometry(true);physicalDrag={id,previous:{x:n.x,y:n.y},origin:{x:n.x,y:n.y},direction:{x:1,y:0},members:n.type==='group'?nodes.filter(m=>m.type==='muscle'&&m.group===id).map(m=>({n:m,x:m.x,y:m.y})):[]};n.vx=n.vy=0;
+ for(const m of physicalDrag.members){parked.delete(m.n.id);activate(m.n,deterministicNormal(m.n)).follow=true}
+ // Only neighbours whose home is blocked by this very dot may return when it leaves.
+ for(const [key,p]of parked){if(!byId.has(key)){parked.delete(key);continue}if(nodeVisible(p.n)&&Math.hypot(p.n.ax-n.x,p.n.ay-n.y)<clearance(p.n,n,true))activate(p.n,p.normal)}
+}
+function movePhysicalDrag(n){
+ if(!physicalDrag)return;if(!physicalDrag.started){n.el.classList.add('dragging');physicalDrag.started=true}
+ const before=physicalDrag.previous,dx=n.x-before.x,dy=n.y-before.y,length=Math.hypot(dx,dy);
+ if(length>.01)physicalDrag.direction={x:dx/length,y:dy/length};
+ const now=performance.now();
+ for(const m of physicalDrag.members){const p=clampPoint({x:m.x+n.x-physicalDrag.origin.x,y:m.y+n.y-physicalDrag.origin.y},m.n);m.n.ax=p.x;m.n.ay=p.y}
+ pendingMoves.push({n,before:{...before},after:{x:n.x,y:n.y}});
+ physicalDrag.previous={x:n.x,y:n.y};
+ wakePhysics();
+}
+function contactPath(n,before,after,now){
+ const length=Math.hypot(after.x-before.x,after.y-before.y),direction=length>.01?{x:(after.x-before.x)/length,y:(after.y-before.y)/length}:physicalDrag.direction;
+ for(const other of pathNeighbours(n,before,after)){
+  if(other===n||physicalDrag.id===other.id||physicalDrag.members.some(m=>m.n===other))continue;
+  const q=closest(other,before,after),r=clearance(other,n,true);
+  if(Math.hypot(other.x-q.x,other.y-q.y)>=r)continue;
+  const normal=normalFor(other,q,direction,n),a=activate(other,normal);
+  a.pulse={x:q.x+normal.x*r,y:q.y+normal.y*r};a.until=now+170;
+ }
+}
+function endPhysicalDrag(n){
+ flushPending(performance.now());n.ax=n.x;n.ay=n.y;n.vx=n.vy=0;n.el.classList.remove('dragging');
+ if(n.type==='exercise'){
+  const action=userActions.find(a=>a.id===n.id);
+  if(action){const copy=userActions.map(a=>a.id===n.id?{...a,position:{x:n.x,y:n.y}}:a);if(persist(copy,showActions))userActions=copy;else{const old=action.position||{x:n.initial[0],y:n.initial[1]};n.x=n.ax=old.x;n.y=n.ay=old.y}}
+ }
+ physicalDrag=null;for(const a of avoiders.values()){a.pulse=null;a.until=0}wakePhysics();
+}
+motionQuery.addEventListener('change',()=>{if(motionQuery.matches){cancelAnimationFrame(physicsRAF);physicsRAF=0;stepAvoidance(performance.now(),0,true)}});
+
+function status(message,error=false){$('saveStatus').textContent=message;$('saveStatus').classList.toggle('error',error)}
+function uid(){return 'user-'+crypto.randomUUID()}
+function validateActions(raw){if(!Array.isArray(raw)||raw.length>100)throw Error('最多保存100个动作。');const ids=new Set();return raw.map(a=>{if(!a||typeof a!=='object'||typeof a.id!=='string'||!/^user-[a-z0-9-]{1,80}$/.test(a.id)||ids.has(a.id))throw Error('动作编号无效或重复。');ids.add(a.id);if(typeof a.label!=='string'||!a.label.trim()||a.label.trim().length>60)throw Error('动作名称应为1～60字。');for(const key of ['primary','secondary'])if(!Array.isArray(a[key])||a[key].length>18||a[key].some(id=>!D.muscles.some(m=>m.id===id))||new Set(a[key]).size!==a[key].length)throw Error('参与肌群无效。');if(!a.primary.length||a.primary.some(id=>a.secondary.includes(id)))throw Error('至少选择一个主要肌群，主辅不能重复。');for(const [key,max]of [['equipment',80],['notes',800]])if(typeof a[key]!=='string'||a[key].length>max)throw Error('器械或备注内容过长。');let position;if(a.position!==undefined){if(!a.position||!['x','y'].every(k=>typeof a.position[k]==='number'&&Number.isFinite(a.position[k]))||a.position.x<35||a.position.x>1140||a.position.y<30||a.position.y>800)throw Error('动作位置无效。');position={x:a.position.x,y:a.position.y}}return {id:a.id,label:a.label.trim(),equipment:a.equipment.trim(),notes:a.notes.trim(),primary:[...a.primary],secondary:[...a.secondary],...(position?{position}:{}),provenance:'user'}})}
+function persist(actions,layer,allowRepair=false){if(storageBlocked&&!allowRepair){status('本地记录读取异常，请先导出原始记录再导入备份。',true);return false}try{localStorage.setItem(STORE,JSON.stringify({version:1,actions,showActions:layer}));storageBlocked=false;status('已保存在本机');return true}catch(e){status('保存失败，请检查浏览器存储权限。原记录未覆盖。',true);return false}}
+function loadActions(){try{const raw=localStorage.getItem(STORE);if(!raw)return;const d=JSON.parse(raw);if(d.version!==1||typeof d.showActions!=='boolean')throw Error('version');userActions=validateActions(d.actions);showActions=d.showActions;status('已恢复本机动作')}catch(e){storageBlocked=true;status('本地记录读取异常，原始记录仍保留。',true)}}
+function rebuildActions(){
+ paintKey='';stopPhysics();for(let i=edges.length-1;i>=0;i--)if(edges[i].role!=='membership'){edges[i].el.remove();edges.splice(i,1)}
+ for(let i=nodes.length-1;i>=0;i--)if(nodes[i].type==='exercise'){nodes[i].el.remove();byId.delete(nodes[i].id);nodes.splice(i,1)}
+ const actions=[...userActions.filter(a=>!showExamples||!EXAMPLES.some(e=>e.id===a.id)),...(showExamples?EXAMPLES:[])];
+ actions.forEach((a,index)=>{const members=a.primary.map(id=>byId.get(id)),cx=members.reduce((s,n)=>s+n.x,0)/members.length,cy=members.reduce((s,n)=>s+n.y,0)/members.length,angle=index*2.4;
+ const x=a.position?.x??Math.max(50,Math.min(1125,cx+100*Math.cos(angle))),y=a.position?.y??Math.max(40,Math.min(785,cy+100*Math.sin(angle)));
+ const n={...a,type:'exercise',group:members[0].group,color:'#b6bfca',r:8,x,y,ax:x,ay:y,vx:0,vy:0};add(n);mountNode(n);
+ for(const[role,ids]of [['primary',a.primary],['secondary',a.secondary],['stability',a.stabilizers||[]]])for(const id of ids){const e={a:a.id,b:id,role};e.el=element('path',{class:'graph-edge '+role,'data-from':a.id,'data-to':id},$('edges'));edges.push(e)}});
+ D.exercises=userActions;resetSprings();if(selected&&!byId.has(selected))selected=null;position();paint();updateActionControls();
+}
+function updateActionControls(){
+ document.querySelector('.graph-legend').innerHTML=showActions||showExamples?'<span><i class="legend-shape"></i>肌群</span><span><i class="legend-shape hollow"></i>动作</span>':'<span><i class="legend-shape"></i>肌群</span>';
+ $('actionCount').textContent=userActions.length;$('layerToggle').setAttribute('aria-pressed',String(showActions));$('examplesToggle').setAttribute('aria-pressed',String(showExamples));
+ $('visiblePlanCount').textContent=EXAMPLES.length;$('graphCount').textContent='5 个区域 · '+D.muscles.length+' 个肌群'+(showExamples?' · '+EXAMPLES.length+' 个计划动作':'')+(showActions?' · '+userActions.length+' 个自建动作':'');
+}
+function setExamples(value){showExamples=value;rebuildActions();showDetail();return true}
+function setLayer(value){if(!persist(userActions,value))return false;showActions=value;if(!value&&byId.get(selected)?.type==='exercise'&&byId.get(selected).provenance!=='example')selected=null;paint();showDetail();updateActionControls();return true}
+function commit(actions,layer=showActions,repair=false){let valid;try{valid=validateActions(actions)}catch(e){status(e.message,true);return false}if(!persist(valid,layer,repair))return false;userActions=valid;showActions=layer;rebuildActions();showDetail();if(showActions)wakePhysics();return true}
+function showActionDetail(n){
+ const sample=n.provenance==='example';$('detailHeader').textContent=sample?'动作详情':'我的动作';
+ const section=(label,ids,role)=>ids.length?'<div class="detail-section"><div class="section-label"><i class="role-line '+role+'"></i>'+label+'</div><div class="tags">'+ids.map(tag).join('')+'</div></div>':'';
+ $('detailContent').innerHTML='<div class="detail-kicker">'+(sample?'动作库':'自建动作')+'</div><h2>'+esc(n.label)+'</h2><p class="quiet-note">'+esc(n.equipment||'未填写器械')+'</p>'+section('主要发力',n.primary,'primary')+section(sample?'协同参与':'辅助参与',n.secondary,'secondary')+section('稳定参与',n.stabilizers||[],'stability')+'<p class="detail-description" style="white-space:pre-wrap">'+esc(n.notes)+'</p>'+(sample?'<details class="source-details"><summary>资料来源</summary>'+n.sources.map(s=>'<a href="'+esc(s.url)+'" target="_blank" rel="noopener noreferrer">'+esc(s.label)+' ↗</a>').join('')+'</details>':'')+'<div class="action-detail-buttons">'+(sample?'<button class="edit-action" data-plan-add="'+n.id+'">加入计划</button>':'<button class="edit-action" data-plan-add="'+n.id+'">加入计划</button><button class="edit-action" data-edit-action="'+n.id+'">编辑</button>')+'</div>';
+ $('detailContent').scrollTop=0;
+}
+const templates={bench:{label:'杠铃卧推',equipment:'杠铃 · 平凳',primary:['pectoralis_major'],secondary:['triceps_brachii','deltoid_anterior'],notes:'可根据自己的动作形式修改。'},squat:{label:'杠铃深蹲',equipment:'杠铃 · 深蹲架',primary:['quadriceps','gluteus_maximus'],secondary:['adductors','erector_spinae'],notes:'可根据自己的动作形式修改。'},deadlift:{label:'杠铃硬拉',equipment:'杠铃',primary:['gluteus_maximus','quadriceps','hamstrings'],secondary:['erector_spinae','latissimus_dorsi'],notes:'可根据自己的动作形式修改。'}};
+function initDialogs(){$('actionDialogs').innerHTML=`<dialog id="managerDialog" aria-labelledby="managerTitle"><div class="dialog-title"><h2 id="managerTitle">我的动作</h2><button data-close="managerDialog" aria-label="关闭动作管理">×</button></div><p>默认底图只显示肌群。你创建的动作保存在这台设备，可以随时显示或隐藏。</p><div class="manager-tools"><button id="managerAdd">＋ 新建动作</button><button id="exportActions">导出备份</button><button id="importActions">导入备份</button></div><input id="importFile" type="file" accept=".json,application/json" hidden><div id="importReview" class="import-review" hidden></div><p class="form-error" id="managerError" role="alert"></p><div id="savedActionList"></div></dialog><dialog id="editorDialog" aria-labelledby="editorTitle"><div class="dialog-title"><h2 id="editorTitle">添加动作</h2><button data-close="editorDialog" aria-label="取消编辑">×</button></div><form id="actionForm"><label class="form-field">可选学习模板<select id="actionTemplate"><option value="">从空白开始</option><option value="bench">杠铃卧推</option><option value="squat">杠铃深蹲</option><option value="deadlift">杠铃硬拉</option></select></label><label class="form-field">动作名称<input id="actionName" maxlength="60" required placeholder="例如：我的哑铃划船"></label><label class="form-field">器械<input id="actionEquipment" maxlength="80" placeholder="可不填"></label><p>至少选择一个主要肌群。主辅关系由你指定，保存后标记为自定义。</p><div class="muscle-picker" id="musclePicker"></div><label class="form-field">备注<textarea id="actionNotes" maxlength="800" placeholder="记录动作变式或自己的提示"></textarea></label><p class="form-error" id="editorError" role="alert"></p><div class="form-actions"><button type="button" class="secondary-btn" data-close="editorDialog">取消</button><button type="submit">保存动作</button></div></form></dialog>`;
+ $('examplesToggle').onclick=()=>setExamples(!showExamples);
+ document.addEventListener('click',e=>{const button=e.target.closest('[data-copy-example]');if(!button)return;const a=EXAMPLES.find(a=>a.id===button.dataset.copyExample);openEditor();fillForm({...a,secondary:[...a.secondary,...a.stabilizers],notes:a.notes+'\n从示例建立；辅助参与包含协同与稳定，关系可自行修改。'})});
+ $('addAction').onclick=()=>openEditor();$('manageActions').onclick=openManager;$('managerAdd').onclick=()=>openEditor();$('layerToggle').onclick=()=>{if(!userActions.length){openManager();return}setLayer(!showActions)};
+ document.addEventListener('click',e=>{const close=e.target.closest('[data-close]');if(close)$(close.dataset.close).close();const edit=e.target.closest('[data-edit-action]');if(edit)openEditor(edit.dataset.editAction);const del=e.target.closest('[data-delete-action]');if(del){const id=del.dataset.deleteAction;if(pendingDelete===id){if(commit(userActions.filter(a=>a.id!==id))){pendingDelete=null;renderManager()}else $('managerError').textContent=$('saveStatus').textContent}else{pendingDelete=id;renderManager()}}if(e.target.closest('#detailManager'))openManager()});
+ $('actionTemplate').onchange=()=>{const t=templates[$('actionTemplate').value];if(t)fillForm(t)};$('actionForm').onsubmit=saveEditor;
+ $('exportActions').onclick=()=>{const raw=storageBlocked?localStorage.getItem(STORE):JSON.stringify({version:1,actions:userActions,showActions},null,2);const url=URL.createObjectURL(new Blob([raw||''],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=storageBlocked?'FitPilot-原始记录.txt':'FitPilot-我的动作.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+ $('importActions').onclick=()=>$('importFile').click();$('importFile').onchange=prepareImport;
+}
+function picker(){return D.groups.map(g=>'<div class="picker-group">'+esc(g.label)+'</div>'+D.muscles.filter(m=>m.group===g.id).map(m=>'<label class="picker-row"><span>'+esc(m.label)+'</span><select data-muscle-role="'+m.id+'" aria-label="'+esc(m.label)+'参与角色"><option value="">不关联</option><option value="primary">主要参与</option><option value="secondary">辅助参与</option></select></label>').join('')).join('')}
+function fillForm(a){$('actionName').value=a.label||'';$('actionEquipment').value=a.equipment||'';$('actionNotes').value=a.notes||'';for(const el of $('musclePicker').querySelectorAll('select'))el.value=(a.primary||[]).includes(el.dataset.muscleRole)?'primary':(a.secondary||[]).includes(el.dataset.muscleRole)?'secondary':''}
+let editingId=null;
+function openEditor(id=null){editingId=id;$('editorTitle').textContent=id?'编辑动作':'添加动作';$('musclePicker').innerHTML=picker();$('actionTemplate').value='';$('editorError').textContent='';fillForm(userActions.find(a=>a.id===id)||{});if(!$('editorDialog').open)$('editorDialog').showModal();$('actionName').focus()}
+function saveEditor(e){e.preventDefault();const primary=[],secondary=[];for(const el of $('musclePicker').querySelectorAll('select'))if(el.value)(el.value==='primary'?primary:secondary).push(el.dataset.muscleRole);const old=userActions.find(a=>a.id===editingId),a={...(old||{}),id:editingId||uid(),label:$('actionName').value,equipment:$('actionEquipment').value,notes:$('actionNotes').value,primary,secondary};try{validateActions([a]);if(!commit(editingId?userActions.map(item=>item.id===editingId?a:item):[...userActions,a],true))throw Error($('saveStatus').textContent);$('editorDialog').close();if($('managerDialog').open)renderManager();choose(a.id)}catch(error){$('editorError').textContent=error.message}}
+function openManager(){pendingDelete=null;$('managerError').textContent='';renderManager();if(!$('managerDialog').open)$('managerDialog').showModal()}
+function renderManager(){$('exportActions').textContent=storageBlocked?'导出原始记录':'导出备份';$('savedActionList').innerHTML=userActions.length?userActions.map(a=>'<div class="saved-action"><span class="name">'+esc(a.label)+'<small>自定义 · '+a.primary.map(id=>esc(byId.get(id).label)).join('、')+'</small></span><button data-edit-action="'+a.id+'">编辑</button><button class="danger" data-delete-action="'+a.id+'">'+(pendingDelete===a.id?'确定删除':'删除')+'</button></div>').join(''):'<div class="empty-actions"><strong>从你的第一个动作开始</strong><br>点击“新建动作”，选择主要与辅助肌群。<br>也可以从三个可修改的学习模板开始。</div>'}
+async function prepareImport(){const file=$('importFile').files[0];$('importFile').value='';if(!file)return;try{if(file.size>2*1024*1024)throw Error('备份不能超过2 MiB。');const d=JSON.parse(await file.text());if(d.version!==1)throw Error('无法识别这个备份版本。');const incoming=validateActions(d.actions),merged=[...userActions];let added=0,skipped=0;for(let a of incoming){const old=merged.find(v=>v.id===a.id);if(old&&JSON.stringify(old)===JSON.stringify(a)){skipped++;continue}if(old)a={...a,id:uid()};merged.push(a);added++}validateActions(merged);pendingImport=merged;$('managerError').textContent='';$('importReview').hidden=false;$('importReview').innerHTML='将新增 '+added+' 个动作，跳过 '+skipped+' 个相同记录。现有动作保留。'+(storageBlocked?'当前本地原始记录无法解析；请先导出原始记录，确认后会保存本次备份。':'')+'<div class="dialog-actions"><button id="confirmImport">合并导入</button><button id="cancelImport">取消</button></div>';$('confirmImport').onclick=()=>{if(commit(pendingImport,showActions,true)){$('importReview').hidden=true;pendingImport=null;renderManager()}else $('managerError').textContent=$('saveStatus').textContent};$('cancelImport').onclick=()=>{$('importReview').hidden=true;pendingImport=null}}catch(e){$('managerError').textContent='导入失败：'+e.message;pendingImport=null;$('importReview').hidden=true}}
+function initActions(){loadActions();initDialogs();rebuildActions();updateActionControls()}
+
+$('graphCount').innerHTML='<strong>05</strong> 个中心　·　'+D.muscles.length+' 个肌群节点';position();updateView();paint();showDetail();initActions();
+window.fitpilotAtlas={select:choose,data:D,nodes,edges,setPlanActions(actions,show=false){EXAMPLES=actions.map(a=>({...a,provenance:'example',notes:a.notes||'',sources:a.sources||[],stabilizers:a.stabilizers||[]}));showExamples=show;rebuildActions();showDetail()},getState:()=>({selected,showActions,showExamples,exampleCount:showExamples?EXAMPLES.length:0,actionCount:userActions.length,simulationRunning:!!physicsRAF,view:{...view},related:[...neighborhood(selected).lit]})};
+
+})();
+</script><script>
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.FitPilotPlan=api})(typeof window!=='undefined'?window:globalThis,function(){
+ 'use strict';
+ const groupNames={chest:'胸',back:'背',shoulders:'肩',legs:'臀腿',arms:'手臂'};
+ const muscleGroups={pectoralis_major:'chest',serratus_anterior:'chest',latissimus_dorsi:'back',trapezius:'back',rhomboids:'back',erector_spinae:'back',deltoid_anterior:'shoulders',deltoid_lateral:'shoulders',deltoid_posterior:'shoulders',gluteus_maximus:'legs',gluteus_medius:'legs',quadriceps:'legs',hamstrings:'legs',adductors:'legs',calves:'legs',biceps_brachii:'arms',triceps_brachii:'arms',brachialis:'arms'};
+ const modeNames={barbell:'杠铃总重',dumbbell:'单只哑铃',machine:'本台器械配重',bodyweight:'额外负重',custom:'自定义负重'};
+ const patternNames={'horizontal-push':'水平推举','vertical-push':'肩上推举','horizontal-pull':'水平划船','vertical-pull':'垂直下拉','elbow-flexion':'弯举','elbow-extension':'臂屈伸',squat:'深蹲',hinge:'髋铰链','knee-extension':'腿屈伸','lateral-raise':'侧平举','chest-fly':'飞鸟','y-raise':'Y字抬举','reverse-fly':'反向飞鸟',custom:'自建动作'};
+ const clone=x=>JSON.parse(JSON.stringify(x));
+ function blank(){return {version:1,config:{goal:'hypertrophy',focus:'all',experience:'beginner',minutes:60,priority:''},days:Array.from({length:7},()=>({items:[]})),logs:[],revisions:[]}}
+ function numeric(n,min,max){return typeof n==='number'&&Number.isFinite(n)&&n>=min&&n<=max}
+ function integer(n,min,max){return Number.isInteger(n)&&numeric(n,min,max)}
+ function text(s,max){return typeof s==='string'&&s.length<=max}
+ function safeId(s){return typeof s==='string'&&/^[a-zA-Z0-9-]{1,100}$/.test(s)}
+ function exercise(a){if(!a||!safeId(a.id)||!text(a.label,60)||!a.label||!text(a.equipment,80)||!Object.hasOwn(modeNames,a.mode)||!Object.hasOwn(patternNames,a.pattern)||typeof a.compound!=='boolean')throw Error('动作信息无效。');let all=[];for(const k of ['primary','secondary','stabilizers']){if(!Array.isArray(a[k])||a[k].length>18||a[k].some(m=>!Object.hasOwn(muscleGroups,m)))throw Error('动作肌群无效。');all.push(...a[k])}if(!a.primary.length||new Set(all).size!==all.length)throw Error('动作肌群重复或缺少主练肌群。');return {id:a.id,label:a.label,equipment:a.equipment,mode:a.mode,pattern:a.pattern,compound:a.compound,primary:[...a.primary],secondary:[...a.secondary],stabilizers:[...a.stabilizers]}}
+ function target(t){if(!t||!text(t.station??'',60)||!integer(t.sets,1,12)||!integer(t.min,1,100)||!integer(t.max,t.min,100)||!integer(t.rest,0,600)||(t.weight!==null&&!numeric(t.weight,0,1000))||(t.step!==null&&!numeric(t.step,.25,50)))throw Error('请检查组数、次数、重量或休息时间。');return {sets:t.sets,min:t.min,max:t.max,rest:t.rest,weight:t.weight,step:t.step,station:t.station||''}}
+ function config(c){if(!c||!['hypertrophy','strength','general'].includes(c.goal)||!['all',...Object.keys(groupNames)].includes(c.focus)||!['beginner','intermediate','advanced'].includes(c.experience)||!integer(c.minutes,15,180)||!(c.priority===''||safeId(c.priority)))throw Error('计划目标设置无效。');return {goal:c.goal,focus:c.focus,experience:c.experience,minutes:c.minutes,priority:c.priority}}
+ function days(ds){if(!Array.isArray(ds)||ds.length!==7)throw Error('计划必须包含七天。');const ids=new Set();return ds.map(d=>{if(!d||!Array.isArray(d.items)||d.items.length>12)throw Error('每天最多安排12个动作。');return {items:d.items.map(i=>{if(!i||!safeId(i.id)||ids.has(i.id))throw Error('计划条目编号重复或无效。');ids.add(i.id);return {id:i.id,exercise:exercise(i.exercise),target:target(i.target)}})}})}
+ function validDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T00:00:00Z');return !isNaN(d)&&d.toISOString().slice(0,10)===s}
+ function validate(raw){if(!raw||raw.version!==1)throw Error('无法识别计划备份版本。');const result={version:1,config:config(raw.config),days:days(raw.days),logs:[],revisions:[]};if(!Array.isArray(raw.logs)||raw.logs.length>2000)throw Error('训练记录数量无效。');const ids=new Set();result.logs=raw.logs.map(l=>{if(!l||!safeId(l.id)||ids.has(l.id)||!validDate(l.date)||!numeric(l.createdAt,0,9e15)||!text(l.station,60)||!['easy','moderate','hard'].includes(l.effort)||!Array.isArray(l.sets)||!l.sets.length||l.sets.length>12)throw Error('训练记录无效。');ids.add(l.id);return {id:l.id,date:l.date,createdAt:l.createdAt,station:l.station,exercise:exercise(l.exercise),target:target(l.target),effort:l.effort,sets:l.sets.map(s=>{if(!s||!integer(s.reps,0,100)||!numeric(s.weight,0,1000))throw Error('实际组数或重量无效。');return {weight:s.weight,reps:s.reps}})}});if(!Array.isArray(raw.revisions)||raw.revisions.length>8)throw Error('计划历史版本无效。');result.revisions=raw.revisions.map(r=>({config:config(r.config),days:days(r.days)}));return result}
+ function snapshot(a){return exercise({...a,mode:a.mode||'custom',pattern:a.pattern||'custom',compound:!!a.compound,stabilizers:a.stabilizers||[]})}
+ function regions(a,role){return [...new Set(a[role].map(m=>muscleGroups[m]))]}
+ function coverage(items,actual=false){const stats=Object.fromEntries(Object.keys(groupNames).map(g=>[g,{direct:0,indirect:0,stability:0}]));for(const i of items){const sets=actual?i.sets.filter(s=>s.reps>0).length:i.target.sets;for(const [role,key]of [['primary','direct'],['secondary','indirect'],['stabilizers','stability']])for(const group of regions(i.exercise,role))stats[group][key]+=sets}return stats}
+ function estimate(items){return Math.ceil(items.reduce((s,i)=>s+i.target.sets*((i.target.min+i.target.max)/2)*3+Math.max(0,i.target.sets-1)*i.target.rest+60,0)/60)}
+ function comparable(log,item,station){return log.exercise.id===item.exercise.id&&log.exercise.mode===item.exercise.mode&&log.exercise.equipment===item.exercise.equipment&&log.target.sets===item.target.sets&&log.target.min===item.target.min&&log.target.max===item.target.max&&(item.exercise.mode!=='machine'||!!station&&log.station===station)}
+ function progression(item,logs,station=item.target.station||''){
+  if(item.target.weight===null)return {kind:'unknown',title:'先填写计划重量',body:'目前只能检查计划结构；重量适配需要实际完成记录。'};
+  const recent=logs.filter(l=>comparable(l,item,station)).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);
+  if(item.exercise.mode==='machine'&&!station)return {kind:'unknown',title:'器械重量按同一台比较',body:'记录训练时填写器械编号；不同器械的配重不直接比较。'};
+  if(!recent.length)return {kind:'unknown',title:'记录后再判断负重',body:'目前没有同动作、同记录口径及次数目标的完成记录。'};
+  const completed=l=>l.sets.length===item.target.sets&&l.sets.every(s=>s.weight===item.target.weight);
+  const two=recent.slice(0,2);
+  const achieved=l=>l.sets.every(s=>s.reps>=item.target.max)&&l.effort!=='hard';
+  // Separate dates prevent two submissions from one session triggering progression.
+  if(two.length===2&&two[0].date!==two[1].date&&two.every(l=>completed(l)&&achieved(l)))return {kind:'progress',title:'可以考虑下一档重量',body:'两个不同日期都完成了当前重量的次数上限，且自评未接近极限。'+(item.target.step===null?'先填写器械允许的最小加重档位，再决定是否调整。':'可以预览增加 '+item.target.step+' 公斤；确认后才修改计划。'),value:item.target.step===null?null:Math.round((item.target.weight+item.target.step)*100)/100,evidence:two.map(l=>l.date)};
+  if(two.length===2&&two[0].date!==two[1].date&&two.every(l=>completed(l)&&l.sets.some(s=>s.reps<item.target.min)))return {kind:'review',title:'先检查目标与休息安排',body:'两个不同日期都有组数未达到次数下限。可考虑维持或降低负重，并检查组间休息；系统不据此判断动作质量。',evidence:two.map(l=>l.date)};
+  const last=recent[0];const sameLoad=last.sets.length&&last.sets.every(s=>s.weight===last.sets[0].weight),previous=last.sets[0]?.weight;
+  if(sameLoad&&previous>0&&item.target.weight>previous*1.10)return {kind:'review',title:'确认这次加重量',body:'计划重量比最近同口径记录高 '+Math.round((item.target.weight/previous-1)*100)+'%。请结合完成表现确认；此提示不代表风险诊断。',evidence:[last.date]};
+  return {kind:'hold',title:'继续积累完成记录',body:'先观察是否稳定完成目标次数；目前没有触发加重建议。',evidence:[last.date]};
+ }
+ function suggestions(plan,day){const items=plan.days[day].items,all=plan.days.flatMap(d=>d.items),result=[];const add=(id,title,body,extra={})=>result.push({id,title,body,...extra});if(!all.length)return [{id:'start',title:'从一个训练日开始',body:'选择动作，填写计划重量、组数和次数。'}];
+  const stats=coverage(all);if(plan.config.focus==='all'){const missing=Object.keys(groupNames).filter(g=>!stats[g].direct&&!stats[g].indirect);if(missing.length)add('coverage','看看本周的覆盖范围','你选择了全身目标；当前计划尚未安排涉及'+missing.map(g=>groupNames[g]).join('、')+'的动作。',{basis:'只检查图谱中已收录的区域，不代表全身完整评估。'})}
+  const patterns=new Map();for(const i of items){const p=i.exercise.pattern;if(p!=='custom'){if(!patterns.has(p))patterns.set(p,[]);patterns.get(p).push(i)}}for(const [p,rows]of patterns)if(rows.length>=3)add('repeat-'+p,'同类动作可以精简',patternNames[p]+'安排了'+rows.length+'项、共'+rows.reduce((s,i)=>s+i.target.sets,0)+'组。可以按优先级保留；这是重复提醒，不是过量诊断。');
+  const minutes=estimate(items);if(minutes>plan.config.minutes)add('time','本次可能超过可用时间','按当前次数与休息估算约'+minutes+'分钟，你设置了'+plan.config.minutes+'分钟。可减少次要动作。',{basis:'每次动作暂按3秒、动作切换按1分钟估算，不含热身。'});
+  const priority=items.findIndex(i=>i.exercise.id===plan.config.priority);if(priority>0)add('priority','把重点动作放在前面',items[priority].exercise.label+'是你设置的重点动作，目前排在第'+(priority+1)+'项。',{action:{type:'moveFirst',itemId:items[priority].id}});
+  else if(plan.config.goal==='strength'&&items.length&&!items[0].exercise.compound){const index=items.findIndex(i=>i.exercise.compound);if(index>0)add('order','考虑先做主要复合动作','当前从孤立动作开始；如果以力量表现为目标，可以预览将'+items[index].exercise.label+'前置。',{action:{type:'moveFirst',itemId:items[index].id}})}
+  const current=coverage(items),previous=coverage(plan.days[(day+6)%7].items);const repeated=Object.keys(groupNames).filter(g=>current[g].direct>=6&&previous[g].direct>=6);if(repeated.length)add('adjacent','留意连续两天的同区域安排',repeated.map(g=>groupNames[g]).join('、')+'在相邻两天都安排了至少6个主练组。可结合实际恢复感受决定是否换日。',{basis:'6组是本产品的提示阈值，不是生理恢复分界线。'});
+  const unidentified=items.filter(i=>i.exercise.mode==='machine'&&!i.target.station);if(unidentified.length)add('machines','给器械取一个编号','有'+unidentified.length+'个器械动作还未指定具体器械。可在动作设置中填写编号；负重进阶只比较同一台器械。');
+  const unknown=items.filter(i=>i.target.weight===null);if(unknown.length)add('weights','还有'+unknown.length+'个动作未填写重量','留空不按0公斤计算，也不会为这些动作猜测起始重量。');
+  for(const i of items){const station=i.target.station||'';const advice=progression(i,plan.logs,station);if(['progress','review'].includes(advice.kind))add('load-'+i.id,i.exercise.label+'：'+advice.title,advice.body,{basis:(advice.evidence||[]).join('、'),...(advice.value!==null&&advice.value!==undefined&&advice.value<=1000?{action:{type:'weight',itemId:i.id,value:advice.value}}:{})})}
+  if(!result.length)add('ready','计划已整理好','目前未触发结构调整提示。记录实际完成情况后，可进一步查看负重建议。');return result;
+ }
+ return {blank,validate,snapshot,coverage,estimate,progression,suggestions,groupNames,muscleGroups,modeNames,patternNames,clone,validDate};
+});
+
+</script><script>
+(()=>{'use strict';
+ const E=window.FitPilotPlan,A=window.fitpilotAtlas,C=window.FITPILOT_CATALOGUE,$=id=>document.getElementById(id),KEY='fitpilot.training-plan.v1';
+ const weekdays=['周一','周二','周三','周四','周五','周六','周日'];
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const uid=()=>crypto.randomUUID(),today=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Shanghai'});
+ let state=E.blank(),blocked=false,day=0,demo=false,realState=null,libraryFilter='all',libraryQuery='',pending=null,recordItem=null,settingsItem=null,noticeTimer,coverageMode='plan';
+ try{const loaded=localStorage.getItem(KEY);if(loaded)state=E.validate(JSON.parse(loaded))}catch(e){blocked=true}
+ const allActions=()=>[...C,...A.data.exercises.map(a=>({...a,mode:'custom',pattern:'custom',compound:false,stabilizers:[]}))];
+ const findAction=id=>allActions().find(a=>a.id===id);
+ const findItem=id=>state.days.flatMap(d=>d.items).find(i=>i.id===id);
+ const weightText=t=>t.weight===null?'未填写':t.weight+' 公斤';
+ function notice(s,error=false){clearTimeout(noticeTimer);$('planNotice').hidden=false;$('planNotice').textContent=s;$('planNotice').classList.toggle('error',error);if(!error)noticeTimer=setTimeout(()=>$('planNotice').hidden=true,2400)}
+ function save(next,{revision=true,repair=false}={}){
+  if(blocked&&!repair){notice('原记录读取异常。请先在备份菜单导出原始记录，再导入有效备份。',true);return false}
+  try{if(revision)next.revisions=[...state.revisions,{config:E.clone(state.config),days:E.clone(state.days)}].slice(-8);const checked=E.validate(next);if(!demo)localStorage.setItem(KEY,JSON.stringify(checked));state=checked;render();notice(demo?'示例已调整，未写入个人记录':'已保存');return true}catch(e){notice('保存失败：'+e.message+' 原记录保留。',true);return false}
+ }
+ function change(fn,opts){try{const next=E.clone(state);fn(next);return save(next,opts)}catch(e){notice(e.message,true);return false}}
+ function syncGraph(show=false){const seen=new Set();const rows=state.days[day].items.filter(i=>!seen.has(i.exercise.id)&&seen.add(i.exercise.id)).map(i=>{const original=findAction(i.exercise.id);return {...i.exercise,...(original?{notes:original.notes||'',sources:original.sources||[],position:original.position}:{}),position:original?.position}});A.setPlanActions(rows,show)}
+ function tab(name){const isPlan=name==='plan';$('graphView').hidden=isPlan;$('planView').hidden=!isPlan;$('graphTab').setAttribute('aria-selected',String(!isPlan));$('planTab').setAttribute('aria-selected',String(isPlan));if(!isPlan)syncGraph(false);if(isPlan)render()}
+ function render(){
+  const items=state.days[day].items,all=state.days.flatMap(d=>d.items),advice=E.suggestions(state,day);
+  const monday=new Date(today()+'T00:00:00Z');monday.setUTCDate(monday.getUTCDate()-(monday.getUTCDay()+6)%7);const first=monday.toISOString().slice(0,10);
+  const stats=coverageMode==='plan'?E.coverage(all):E.coverage(state.logs.filter(l=>l.date>=first&&l.date<=today()),true);
+  $('planView').innerHTML=`${demo?'<div class="demo-banner">示例计划 · 调整不会写入个人记录<button id="exitDemo">返回我的计划</button></div>':''}<div class="plan-heading"><div><h1>我的训练周</h1><button class="goal-button" id="editGoal">${{hypertrophy:'增肌',strength:'力量',general:'保持训练'}[state.config.goal]} · ${state.config.focus==='all'?'全身':E.groupNames[state.config.focus]+'优先'} <span>⌄</span></button></div><div class="plan-head-tools"><button id="showDayGraph">查看肌群</button><button class="primary-button" id="planAdd">＋ 添加动作</button></div></div>
+  <div class="week-tabs" role="tablist" aria-label="训练日">${weekdays.map((w,i)=>`<button role="tab" aria-selected="${day===i}" data-day="${i}"><span>${w}</span><b>${state.days[i].items.length?state.days[i].items.length+' 项':'休息'}</b></button>`).join('')}</div>
+  <div class="plan-columns"><section class="session-panel" aria-label="当天动作"><div class="session-heading"><h2>${weekdays[day]}</h2>${items.length?`<span>${items.reduce((s,i)=>s+i.target.sets,0)} 组 · 约 ${E.estimate(items)} 分钟</span>`:''}</div>
+  ${items.length?`<div class="session-table"><div class="plan-table-head"><span>动作</span><span>公斤</span><span>组数</span><span>次数</span><span>操作</span></div>${items.map((i,index)=>`<div class="plan-row" data-row="${i.id}"><div class="plan-action-title"><button data-show-action="${i.exercise.id}">${esc(i.exercise.label)}</button><span class="mode-label" title="重量记录口径">${E.modeNames[i.exercise.mode]}</span></div><input type="number" min="0" max="1000" step="0.25" placeholder="—" value="${i.target.weight===null?'':i.target.weight}" data-edit="weight" data-item="${i.id}" aria-label="${esc(i.exercise.label)}重量"><input type="number" min="1" max="12" value="${i.target.sets}" data-edit="sets" data-item="${i.id}" aria-label="${esc(i.exercise.label)}组数"><input type="text" inputmode="text" value="${i.target.min===i.target.max?i.target.min:i.target.min+'–'+i.target.max}" data-edit="reps" data-item="${i.id}" aria-label="${esc(i.exercise.label)}次数范围"><div class="row-tools"><button data-record="${i.id}" title="记录实际完成" aria-label="记录${esc(i.exercise.label)}">记录</button><button data-settings="${i.id}" aria-label="设置${esc(i.exercise.label)}" title="顺序、休息与加重档位">···</button></div></div>`).join('')}</div>`:`<div class="plan-empty"><div class="empty-orbit">＋</div><h3>留给训练的一天</h3><button class="primary-button" id="emptyAdd">选择动作</button>${!all.length&&!demo?'<button class="text-button" id="startDemo">体验示例计划</button>':''}</div>`}
+  ${items.length?'<details class="completed-panel"><summary>实际完成记录 <span>'+state.logs.length+'</span></summary>'+renderHistory()+'</details>':''}</section>
+  <aside class="plan-feedback" aria-label="计划建议"><div class="feedback-heading"><h2>计划建议</h2><span>${advice.length}</span></div><div id="adviceList">${advice.map((a,i)=>`<article class="advice-card${i>=3?' extra-advice':''}"><h3>${esc(a.title)}</h3><p>${esc(a.body)}</p>${a.basis?'<details><summary>查看依据</summary><p>'+esc(a.basis)+'</p></details>':''}${a.action?'<button class="advice-button" data-advice="'+esc(a.id)+'">预览调整 ↗</button>':''}</article>`).join('')}</div>${advice.length>3?'<button class="more-advice" id="moreAdvice" aria-expanded="false">查看其余 '+(advice.length-3)+' 条</button>':''}
+  <div class="weekly-coverage"><div class="coverage-heading"><h2>${coverageMode==='plan'?'本周安排':'本周完成'}</h2><div class="coverage-toggle"><button data-coverage="plan" aria-pressed="${coverageMode==='plan'}">计划</button><button data-coverage="actual" aria-pressed="${coverageMode==='actual'}">完成</button></div></div><div class="coverage-labels"><span>肌群</span><span>主练组</span><span>间接组</span></div>${Object.entries(stats).map(([g,s])=>`<button class="coverage-row" data-region="${g}"><span><i style="background:${A.data.groups.find(x=>x.id===g).color}"></i>${E.groupNames[g]}</span><b>${s.direct}</b><span>${s.indirect}</span></button>`).join('')}<details><summary>统计说明</summary><p>同一个区域在一组里只计一次；不同肌群的组数不相加为全身总组数。稳定参与单列在动作详情，不折算训练组。${coverageMode==='plan'?'当前表为计划，不是实际完成量。':'当前表统计本周已记录且次数大于0的实际训练组。'}</p></details></div></aside></div>`;
+  $('planAdd').onclick=()=>openLibrary();$('emptyAdd')?.addEventListener('click',()=>openLibrary());$('editGoal').onclick=openGoal;$('showDayGraph').onclick=()=>{tab('graph');syncGraph(true)};$('startDemo')?.addEventListener('click',startDemo);$('exitDemo')?.addEventListener('click',exitDemo);
+  $('moreAdvice')?.addEventListener('click',()=>{const expanded=$('moreAdvice').getAttribute('aria-expanded')==='true';$('adviceList').classList.toggle('expanded',!expanded);$('moreAdvice').setAttribute('aria-expanded',String(!expanded));$('moreAdvice').textContent=expanded?'查看其余 '+(advice.length-3)+' 条':'收起'});
+ }
+ function renderHistory(limit=12){const logs=[...state.logs].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt).slice(0,limit);return (logs.length?logs.map(l=>`<div class="history-row"><div><strong>${esc(l.exercise.label)}</strong><span>${l.date} · ${l.sets.map(s=>s.weight+'公斤×'+s.reps+'次').join(' / ')}</span></div><button data-delete-log="${l.id}" aria-label="删除${esc(l.exercise.label)}${l.date}的训练记录">删除</button></div>`).join(''):'<p class="empty-history">完成训练后，在动作旁点“记录”。</p>')+(state.logs.length>limit?'<button class="text-button" data-open-history>查看全部记录</button>':'')}
+ function add(id){const a=findAction(id)||A.nodes.find(n=>n.id===id&&n.type==='exercise');if(!a)return;const items=state.days[day].items;if(items.some(i=>i.exercise.id===id)){notice('这个动作已经在'+weekdays[day]+'的计划中');return}if(items.length>=12){notice('每天最多安排12个动作',true);return}const exercise=E.snapshot(a);if(change(s=>s.days[day].items.push({id:uid(),exercise,target:{sets:3,min:8,max:12,weight:exercise.mode==='bodyweight'?0:null,rest:90,step:null}}))){renderLibrary();notice('已加入'+weekdays[day]);}}
+ function openLibrary(filter='all'){libraryFilter=filter;libraryQuery='';$('librarySearch').value='';$('libraryDay').value=day;renderLibrary();$('libraryDialog').showModal();$('librarySearch').focus()}
+ function renderLibrary(){
+  $('libraryFilters').innerHTML=[['all','全部'],...Object.entries(E.groupNames),['mine','自建']].map(([id,label])=>`<button data-library-filter="${id}" aria-pressed="${libraryFilter===id}">${label}</button>`).join('');
+  const matches=allActions().filter(a=>(libraryFilter==='all'||libraryFilter==='mine'&&a.id.startsWith('user-')||a.primary.some(m=>E.muscleGroups[m]===libraryFilter))&&(a.label+(a.equipment||'')+(a.aliases||[]).join('')).toLowerCase().includes(libraryQuery.toLowerCase()));
+  $('libraryList').innerHTML=matches.length?matches.map(a=>{const exists=state.days[day].items.some(i=>i.exercise.id===a.id);return `<div class="library-row"><button class="library-name" data-library-show="${a.id}"><strong>${esc(a.label)}</strong><span>${esc(a.equipment)}</span></button><button class="library-add" data-library-add="${a.id}" ${exists?'disabled':''} aria-label="加入${esc(a.label)}">${exists?'已加入':'＋'}</button></div>`}).join(''):'<div class="empty-history">没有匹配动作。</div>';
+ }
+ function showAction(id){$('libraryDialog').close();tab('graph');A.select(id);A.nodes.find(n=>n.id===id)?.el.focus({preventScroll:true})}
+ function editInline(el){const i=findItem(el.dataset.item);if(!i)return;let value;try{if(el.dataset.edit==='reps'){const m=el.value.trim().match(/^(\d{1,3})(?:\s*[-–~～]\s*(\d{1,3}))?$/);if(!m)throw Error('次数请填写8或8–12这样的范围。');value={min:Number(m[1]),max:Number(m[2]||m[1])}}else value={[el.dataset.edit]:el.value===''?null:Number(el.value)};if(!change(s=>Object.assign(s.days.flatMap(d=>d.items).find(x=>x.id===i.id).target,value)))render()}catch(e){render();notice(e.message,true)}}
+ function openGoal(){const c=state.config;$('goalSelect').value=c.goal;$('focusSelect').value=c.focus;$('minutesInput').value=c.minutes;const unique=[...new Map(state.days.flatMap(d=>d.items).map(i=>[i.exercise.id,i.exercise])).values()];$('prioritySelect').innerHTML='<option value="">不指定</option>'+unique.map(a=>`<option value="${a.id}">${esc(a.label)}</option>`).join('');$('prioritySelect').value=c.priority;$('goalError').textContent='';$('goalDialog').showModal()}
+ function openSettings(id){const i=findItem(id);settingsItem=id;$('itemTitle').textContent=i.exercise.label;$('itemRest').value=i.target.rest;$('itemStep').value=i.target.step??'';$('itemDay').value=day;$('itemPosition').value=state.days[day].items.findIndex(x=>x.id===id)+1;$('itemMode').value=i.exercise.mode;$('itemStation').value=i.target.station||'';$('itemStationField').hidden=i.exercise.mode!=='machine';$('itemError').textContent='';$('itemDialog').showModal()}
+ function openRecord(id){const i=findItem(id);recordItem=id;$('recordTitle').textContent=i.exercise.label;$('recordDate').value=today();$('recordDate').max=today();$('recordEffort').value='';$('recordStationField').hidden=i.exercise.mode!=='machine';$('recordStation').required=i.exercise.mode==='machine';$('recordStation').value=i.target.station||'';$('recordMode').textContent=E.modeNames[i.exercise.mode]+' · 公斤';$('recordError').textContent='';$('recordSets').innerHTML=Array.from({length:i.target.sets},(_,index)=>setRow(index,i.target.weight)).join('');$('recordDialog').showModal()}
+ function setRow(index,weight=null){return `<div class="actual-set"><span>${index+1}</span><input class="actual-weight" type="number" min="0" max="1000" step="0.25" required value="${weight??''}" aria-label="第${index+1}组实际公斤"><input class="actual-reps" type="number" min="0" max="100" required placeholder="次数" aria-label="第${index+1}组实际次数"></div>`}
+ function preview(advice){const i=findItem(advice.action.itemId);if(!i)return;pending={type:'advice',advice,day};$('confirmError').textContent='';$('confirmTitle').textContent='调整预览';$('confirmText').textContent=advice.action.type==='weight'?i.exercise.label+'：'+weightText(i.target)+' → '+advice.action.value+' 公斤':i.exercise.label+'：第'+(state.days[day].items.findIndex(x=>x.id===i.id)+1)+'项 → 第1项';$('confirmApply').textContent='应用调整';$('confirmDialog').showModal()}
+ function confirmAction(title,body,action){pending=action;$('confirmError').textContent='';$('confirmTitle').textContent=title;$('confirmText').textContent=body;$('confirmApply').textContent='确认';$('confirmDialog').showModal()}
+ function execute(){if(!pending)return;let ok=false;const p=pending;
+  if(p.type==='advice')ok=change(s=>{const items=s.days[p.day].items,index=items.findIndex(i=>i.id===p.advice.action.itemId);if(index<0)throw Error('动作已变化，请重新检查');if(p.advice.action.type==='weight')items[index].target.weight=p.advice.action.value;else items.unshift(items.splice(index,1)[0])});
+  if(p.type==='remove')ok=change(s=>{for(const d of s.days)d.items=d.items.filter(i=>i.id!==p.id)});
+  if(p.type==='deleteLog')ok=change(s=>{s.logs=s.logs.filter(l=>l.id!==p.id)},{revision:false});
+  if(p.type==='undo'){const next=E.clone(state),last=next.revisions.pop();next.config=last.config;next.days=last.days;ok=save(next,{revision:false})}
+  if(p.type==='import'){const next=p.data;const logs=new Map(state.logs.map(l=>[l.id,l]));for(const log of next.logs){if(logs.has(log.id)&&JSON.stringify(logs.get(log.id))!==JSON.stringify(log))log.id=uid();logs.set(log.id,log)}next.logs=[...logs.values()];next.revisions=state.revisions;ok=save(next,{repair:true});if(ok)blocked=false}
+  if(ok){$('confirmDialog').close();pending=null;syncGraph(false);if($('historyDialog').open)$('allHistory').innerHTML=renderHistory(2000)}else $('confirmError').textContent='未能保存，原记录保留。请检查输入或浏览器存储空间。';
+ }
+ function download(){const raw=blocked?localStorage.getItem(KEY):JSON.stringify(state,null,2),a=document.createElement('a'),url=URL.createObjectURL(new Blob([raw||''],{type:'application/json'}));a.href=url;a.download=blocked?'FitPilot-计划原始记录.txt':'FitPilot-训练计划.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+ function startDemo(){if(demo)return;realState=E.clone(state);demo=true;state=E.blank();state.config.goal='strength';state.config.priority='catalog-bench';for(const [d,ids]of [[0,['fly','bench','incline','dip']],[2,['pullup','barbell-row','hammer']],[4,['squat','rdl','lateral']]])for(const id of ids){const a=C.find(a=>a.id==='catalog-'+id);state.days[d].items.push({id:uid(),exercise:E.snapshot(a),target:{sets:3,min:8,max:12,weight:{bench:60,incline:20,dip:0,fly:10,pullup:0,'barbell-row':40,hammer:10,squat:60,rdl:50,lateral:5}[id],rest:90,step:null}})}day=0;render();notice('示例模式，不会覆盖个人计划')}
+ function exitDemo(){if(!demo)return;state=realState;realState=null;demo=false;render();syncGraph(false)}
+ function dialogs(){
+ $('plannerDialogs').innerHTML=`<dialog id="libraryDialog" aria-labelledby="libraryTitle"><div class="dialog-title"><h2 id="libraryTitle">动作库</h2><button data-close="libraryDialog" aria-label="关闭动作库">×</button></div><div class="library-toolbar"><input id="librarySearch" type="search" placeholder="搜索动作" aria-label="搜索动作库"><select id="libraryDay" aria-label="加入哪个训练日">${weekdays.map((w,i)=>`<option value="${i}">加入${w}</option>`).join('')}</select></div><div id="libraryFilters" class="library-filters"></div><div id="libraryList"></div></dialog>
+ <dialog id="goalDialog" aria-labelledby="goalTitle"><div class="dialog-title"><h2 id="goalTitle">训练目标</h2><button data-close="goalDialog" aria-label="关闭训练目标">×</button></div><form id="goalForm"><div class="form-grid"><label class="form-field">目标<select id="goalSelect"><option value="hypertrophy">增肌</option><option value="strength">力量</option><option value="general">保持训练</option></select></label><label class="form-field">侧重<select id="focusSelect"><option value="all">全身</option>${Object.entries(E.groupNames).map(([id,w])=>`<option value="${id}">${w}优先</option>`).join('')}</select></label><label class="form-field">单次可用时间（分钟）<input id="minutesInput" type="number" min="15" max="180" required></label></div><label class="form-field">重点动作<select id="prioritySelect"></select></label><p class="form-error" id="goalError" role="alert"></p><div class="form-actions"><button type="submit">保存</button></div></form></dialog>
+ <dialog id="itemDialog" aria-labelledby="itemTitle"><div class="dialog-title"><h2 id="itemTitle"></h2><button data-close="itemDialog" aria-label="关闭动作设置">×</button></div><form id="itemForm"><div class="form-grid"><label class="form-field">训练日<select id="itemDay">${weekdays.map((w,i)=>`<option value="${i}">${w}</option>`).join('')}</select></label><label class="form-field">排序<input id="itemPosition" type="number" min="1" max="12" required></label><label class="form-field">组间休息（秒）<input id="itemRest" type="number" min="0" max="600" required></label><label class="form-field">最小加重档位（公斤）<input id="itemStep" type="number" min="0.25" max="50" step="0.25" placeholder="可不填"></label></div><label class="form-field">重量记录口径<select id="itemMode">${Object.entries(E.modeNames).map(([id,w])=>`<option value="${id}">${w}</option>`).join('')}</select></label><label class="form-field" id="itemStationField">器械编号或名称<input id="itemStation" maxlength="60" placeholder="例如：健身房A · 下拉机1"></label><p id="itemError" class="form-error" role="alert"></p><div class="item-footer"><button type="button" id="removeItem" class="danger-button">移除动作</button><button type="submit" class="primary-button">保存</button></div></form></dialog>
+ <dialog id="recordDialog" aria-labelledby="recordTitle"><div class="dialog-title"><h2 id="recordTitle"></h2><button data-close="recordDialog" aria-label="关闭训练记录">×</button></div><form id="recordForm"><div class="form-grid"><label class="form-field">训练日期<input type="date" id="recordDate" required></label><label class="form-field">最后一组感受<select id="recordEffort" required><option value="">请选择</option><option value="easy">轻松，仍有余力</option><option value="moderate">适中</option><option value="hard">吃力，接近极限</option></select></label></div><label class="form-field" id="recordStationField">器械编号或名称<input id="recordStation" maxlength="60" placeholder="例如：健身房A · 下拉机1"></label><div class="actual-head"><span>组</span><span id="recordMode">公斤</span><span>实际次数</span></div><div id="recordSets"></div><div class="record-tools"><button type="button" id="lessSet">− 一组</button><button type="button" id="moreSet">＋ 一组</button></div><p id="recordError" class="form-error" role="alert"></p><div class="form-actions"><button type="submit">保存实际记录</button></div></form></dialog>
+ <dialog id="confirmDialog" aria-labelledby="confirmTitle"><div class="dialog-title"><h2 id="confirmTitle">确认调整</h2><button data-close="confirmDialog" aria-label="取消调整">×</button></div><p id="confirmText"></p><p id="confirmError" class="form-error" role="alert"></p><div class="form-actions"><button data-close="confirmDialog" class="secondary-btn">取消</button><button id="confirmApply">确认</button></div></dialog>
+ <dialog id="historyDialog" aria-labelledby="historyTitle"><div class="dialog-title"><h2 id="historyTitle">训练记录</h2><button data-close="historyDialog" aria-label="关闭训练记录">×</button></div><div id="allHistory"></div></dialog><dialog id="planMenuDialog" aria-labelledby="planMenuTitle"><div class="dialog-title"><h2 id="planMenuTitle">计划与备份</h2><button data-close="planMenuDialog" aria-label="关闭备份管理">×</button></div><div class="backup-menu"><button data-open-history>查看训练记录</button><button id="exportPlan">导出计划与记录</button><button id="importPlan">导入备份</button><button id="undoPlan">撤回上次计划修改</button><button id="demoFromMenu">体验示例计划</button><button id="customActions">管理自建动作</button></div><input id="planFile" type="file" accept=".json,application/json" hidden></dialog>`;
+ $('librarySearch').oninput=()=>{libraryQuery=$('librarySearch').value.trim();renderLibrary()};$('libraryDay').onchange=()=>{day=Number($('libraryDay').value);render();renderLibrary()};
+ $('goalForm').onsubmit=e=>{e.preventDefault();if(change(s=>s.config={goal:$('goalSelect').value,focus:$('focusSelect').value,experience:state.config.experience,minutes:Number($('minutesInput').value),priority:$('prioritySelect').value}))$('goalDialog').close();else $('goalError').textContent='未能保存，请检查设置或存储空间。'};
+ $('itemMode').onchange=()=>{$('itemStationField').hidden=$('itemMode').value!=='machine'};
+ $('itemForm').onsubmit=e=>{e.preventDefault();const dest=Number($('itemDay').value),order=Number($('itemPosition').value)-1,mode=$('itemMode').value;const ok=change(s=>{const source=s.days.find(d=>d.items.some(i=>i.id===settingsItem)),index=source.items.findIndex(i=>i.id===settingsItem),i=source.items[index];if(dest!==day&&s.days[dest].items.some(x=>x.exercise.id===i.exercise.id))throw Error('目标训练日已有这个动作。');if(dest!==day&&s.days[dest].items.length>=12)throw Error('目标训练日已满。');i.target.station=mode==='machine'?$('itemStation').value.trim():'';i.target.rest=Number($('itemRest').value);i.target.step=$('itemStep').value===''?null:Number($('itemStep').value);if(i.exercise.mode!==mode){i.exercise.mode=mode;i.target.weight=null}source.items.splice(index,1);s.days[dest].items.splice(Math.min(order,s.days[dest].items.length),0,i)});if(ok){day=dest;render();$('itemDialog').close()}else $('itemError').textContent='未能保存；请检查目标训练日与输入。'};
+ $('removeItem').onclick=()=>{$('itemDialog').close();confirmAction('移除动作','从计划移除，已经记录的训练历史会保留。',{type:'remove',id:settingsItem})};
+ $('moreSet').onclick=()=>{const count=$('recordSets').children.length;if(count<12)$('recordSets').insertAdjacentHTML('beforeend',setRow(count,findItem(recordItem).target.weight))};$('lessSet').onclick=()=>{if($('recordSets').children.length>1)$('recordSets').lastElementChild.remove()};
+ $('recordForm').onsubmit=e=>{e.preventDefault();const i=findItem(recordItem);if($('recordDate').value>today()){$('recordError').textContent='实际训练日期不能在未来。';return}const log={id:uid(),date:$('recordDate').value,createdAt:Date.now(),station:$('recordStation').value.trim(),exercise:E.clone(i.exercise),target:E.clone(i.target),effort:$('recordEffort').value,sets:[...$('recordSets').children].map(row=>({weight:Number(row.querySelector('.actual-weight').value),reps:Number(row.querySelector('.actual-reps').value)}))};if(change(s=>s.logs.push(log),{revision:false}))$('recordDialog').close();else $('recordError').textContent='保存失败，原记录保留。'};
+ $('confirmApply').onclick=execute;
+ $('exportPlan').onclick=download;$('importPlan').onclick=()=>{if(demo){notice('请先返回个人计划，再导入备份',true);return}$('planFile').click()};
+ $('planFile').onchange=async()=>{const f=$('planFile').files[0];$('planFile').value='';if(!f)return;try{if(f.size>3*1024*1024)throw Error('备份不能超过3 MiB');const incoming=E.validate(JSON.parse(await f.text()));$('planMenuDialog').close();confirmAction('导入备份','将替换当前周计划，并合并训练记录。原计划可通过撤回恢复。',{type:'import',data:incoming})}catch(e){notice('导入失败：'+e.message,true)}};
+ $('undoPlan').onclick=()=>{if(!state.revisions.length){notice('还没有可撤回的计划修改');return}$('planMenuDialog').close();confirmAction('撤回上次计划修改','恢复上一份计划，实际训练记录保持不变。',{type:'undo'})};
+ $('demoFromMenu').onclick=()=>{$('planMenuDialog').close();tab('plan');startDemo()};$('customActions').onclick=()=>{$('planMenuDialog').close();$('manageActions').click()};
+ }
+ document.addEventListener('click',e=>{
+  let b;if((b=e.target.closest('[data-coverage]'))){coverageMode=b.dataset.coverage;render()}
+  if(e.target.closest('[data-open-history]')){$('planMenuDialog').close();$('allHistory').innerHTML=renderHistory(2000);$('historyDialog').showModal()}
+  if((b=e.target.closest('[data-day]'))){day=Number(b.dataset.day);render()}
+  if((b=e.target.closest('[data-library-filter]'))){libraryFilter=b.dataset.libraryFilter;renderLibrary()}
+  if((b=e.target.closest('[data-library-add]')))add(b.dataset.libraryAdd);
+  if((b=e.target.closest('[data-library-show]')))showAction(b.dataset.libraryShow);
+  if((b=e.target.closest('[data-plan-add]')))add(b.dataset.planAdd);
+  if((b=e.target.closest('[data-show-action]'))){tab('graph');A.select(b.dataset.showAction)}
+  if((b=e.target.closest('[data-record]')))openRecord(b.dataset.record);
+  if((b=e.target.closest('[data-settings]')))openSettings(b.dataset.settings);
+  if((b=e.target.closest('[data-advice]'))){const advice=E.suggestions(state,day).find(a=>a.id===b.dataset.advice);if(advice?.action)preview(advice)}
+  if((b=e.target.closest('[data-region]'))){tab('graph');A.select(b.dataset.region)}
+  if((b=e.target.closest('[data-delete-log]')))confirmAction('删除训练记录','删除后会重新计算负重建议。',{type:'deleteLog',id:b.dataset.deleteLog});
+  if(e.target.closest('#openLibraryFromGraph'))openLibrary();
+ });
+ document.addEventListener('change',e=>{if(e.target.matches('[data-edit]'))editInline(e.target)});
+ dialogs();$('graphTab').onclick=()=>tab('graph');$('planTab').onclick=()=>tab('plan');$('libraryButton').onclick=()=>openLibrary();$('planMenuButton').onclick=()=>{$('exportPlan').textContent=blocked?'导出原始记录':'导出计划与记录';$('planMenuDialog').showModal()};
+ render();if(new URLSearchParams(location.search).get('view')==='plan')tab('plan');if(blocked)notice('计划记录读取异常，原内容保留。请在备份菜单导出检查。',true);
+ window.fitpilotPlanner={getState:()=>E.clone(state),getUI:()=>({day,demo,blocked}),catalogue:C,engine:E,openLibrary,showPlan:()=>tab('plan')};
+})();
+
+</script></body></html>
